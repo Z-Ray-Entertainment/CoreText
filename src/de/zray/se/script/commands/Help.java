@@ -21,6 +21,7 @@ public class Help extends AbstractCommand{
         Parameter command = new Parameter(Parameter.Type.STRING);
         params.add(command);
         addParameters(params);
+        
         List<Parameter> params2 = new LinkedList<>();
         Parameter empty = new Parameter(Parameter.Type.EMPTY);
         params2.add(empty);
