@@ -6,7 +6,6 @@
 package de.zray.se.script;
 
 import de.zray.se.script.exceptions.InvalidParameterValueException;
-import de.zray.se.script.exceptions.InvalidTypeException;
 
 /**
  *
