@@ -30,7 +30,6 @@ public abstract class AbstractCommand {
     }
     
     public void setConsole(Console console){
-        System.out.println(getRootCMD()+" Console set "+console);
         this.console = console;
     }
     
@@ -94,7 +93,6 @@ public abstract class AbstractCommand {
         for(ParameterSet tmp : parameterSets){
             try{
                 List<Parameter> buildedParams = tmp.buildParameters(input);
-                System.out.println("BuildedParams: "+buildedParams.toString());
                 return buildedParams;
             }
             catch(InvalidParameterValueException e){
