@@ -70,7 +70,33 @@ public class Console {
     
     public String executeCommand(String input) throws ParameterAmountException, InvalidTypeException, InvalidParameterValueException, SyntaxException {
         List<String> validParameters = prepareInput(input);
+        validParameters = buildStrings(validParameters);
         return executeCommand(validParameters);
+    }
+    
+    private List<String> buildStrings(List<String> parameters){
+        List<String> params = new LinkedList<>();
+        
+        boolean inString = false;
+        String cmd = "";
+        for(String tmp : parameters){
+            if(tmp.startsWith("\"")){
+                inString = true;
+                tmp = tmp.substring(1);
+            }
+            if(inString){
+                cmd += tmp+" ";
+            }
+            else{
+                params.add(tmp);
+            }
+            if(tmp.endsWith("\"")){
+                inString = false;
+                cmd = cmd.substring(0, cmd.length()-2);
+                params.add(cmd);
+            }
+        }
+        return params;
     }
     
     private String executeCommand(List<String> validParameters) throws InvalidParameterValueException, ParameterAmountException{
