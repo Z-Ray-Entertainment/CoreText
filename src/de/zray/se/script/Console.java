@@ -71,7 +71,7 @@ public class Console {
     public String executeCommand(String input) throws ParameterAmountException, InvalidTypeException, InvalidParameterValueException, SyntaxException {
         List<String> validParameters = prepareInput(input);
         validParameters = buildStrings(validParameters);
-        return executeCommand(validParameters);
+        return executeClips(validParameters);
     }
     
     private List<String> buildStrings(List<String> parameters){
@@ -112,25 +112,41 @@ public class Console {
         return validParameters.get(0)+" not found, tipe help all to see all commands.";
     }
     
-    private List<String> executeClips(List<String> params) throws SyntaxException{
-        int firstClip = -1, lastClip = -1;
+    private String executeClips(List<String> params) throws SyntaxException, InvalidParameterValueException, ParameterAmountException{
+        System.out.println("Executing clips: ");
+        for(String tmp : params){
+            System.out.print(tmp+" ");
+        }
+        System.out.println();
+        int firstClip = -1, lastClip = -1, clipCTC = 0;
+        List<String> clipResults = new LinkedList<>();
         for(int i = 0; i < params.size(); i++){
-            if(params.get(i).equals("(") && firstClip == -1){
-                firstClip = i;
+            if(params.get(i).equals("(")){
+                if(firstClip == -1){
+                    firstClip = i;
+                }
+                clipCTC++;
             }
             else if(params.get(i).equals(")")){
-                lastClip = i;
+                clipCTC--;
+                if(clipCTC == 0){
+                    lastClip = i;
+                }
+            }
+            if(firstClip != -1 && lastClip != -1){
+                String tmpResult = executeClips(params.subList(firstClip+1, lastClip));
+                System.out.println("TMPRESULT: "+tmpResult);
+                clipResults.add(tmpResult);
+                firstClip = -1;
+                lastClip = -1;
+            }
+            else if(firstClip == -1 && lastClip == -1){
+                clipResults.add(params.get(i));
             }
         }
-        if(firstClip != -1 && lastClip != -1){
-            return params.subList(firstClip, lastClip);
-        }
-        else if(firstClip == -1 && lastClip == -1){
-            return params;
-        }
-        else{
-            throw new SyntaxException("The amount of ( and ) is invlaid");
-        }
+        String result = executeCommand(clipResults);
+        System.out.println("Command returned: "+result);
+        return result;
     }
     
     private List<String> prepareInput(String input){
