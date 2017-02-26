@@ -38,7 +38,7 @@ public class ParameterSet {
     
     public List<Parameter> buildParameters(List<String> parameters) throws InvalidParameterValueException, ParameterAmountException{
         if(parameters.size() != this.parameters.size()){
-            throw new ParameterAmountException(this.parameters.size(), parameters.size());
+            throw new ParameterAmountException(this.parameters.size(), parameters.size(), parameters.toString());
         }
         List<Parameter> buildedParams = new LinkedList<>();
         for(int i = 0; i < this.parameters.size(); i++){

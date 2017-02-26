@@ -11,8 +11,8 @@ package de.zray.se.script.exceptions;
  */
 public class ParameterAmountException extends Exception{
 
-    public ParameterAmountException(int amountNeeded, int amountGiven) {
-            super("Invalid amount of parameters, "+amountNeeded+" needed and "+amountGiven+" given.");
+    public ParameterAmountException(int amountNeeded, int amountGiven, String parameters) {
+            super("Invalid amount of parameters, "+amountNeeded+" needed and "+amountGiven+" given. "+parameters);
     }
     
 }
