@@ -11,8 +11,6 @@ import de.zray.se.script.Parameter;
 import de.zray.se.script.exceptions.UnknownVariableException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -45,7 +43,7 @@ public class SetVariable extends AbstractCommand{
         catch (InvalidVarTypeException ex) {
            return value+" is no suitable type for "+name;
         }
-        return "";
+        return value;
     }
     
 }
