@@ -9,8 +9,11 @@ import de.zray.se.script.AbstractCommand;
 import de.zray.se.script.exceptions.InvalidVarTypeException;
 import de.zray.se.script.Parameter;
 import de.zray.se.script.Variable;
+import de.zray.se.script.exceptions.UnknownVariableException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -66,7 +69,6 @@ public class Var extends AbstractCommand{
         catch(InvalidVarTypeException e){
             return value+" dose not matches type "+type+" for "+name;
         }
-        return "";
+        return value;
     }
-    
 }
