@@ -113,11 +113,6 @@ public class Console {
     }
     
     private String executeClips(List<String> params) throws SyntaxException, InvalidParameterValueException, ParameterAmountException{
-        System.out.println("Executing clips: ");
-        for(String tmp : params){
-            System.out.print(tmp+" ");
-        }
-        System.out.println();
         int firstClip = -1, lastClip = -1, clipCTC = 0;
         List<String> clipResults = new LinkedList<>();
         for(int i = 0; i < params.size(); i++){
@@ -134,9 +129,7 @@ public class Console {
                 }
             }
             if(firstClip != -1 && lastClip != -1){
-                String tmpResult = executeClips(params.subList(firstClip+1, lastClip));
-                System.out.println("TMPRESULT: "+tmpResult);
-                clipResults.add(tmpResult);
+                clipResults.add(executeClips(params.subList(firstClip+1, lastClip)));
                 firstClip = -1;
                 lastClip = -1;
             }
@@ -144,9 +137,7 @@ public class Console {
                 clipResults.add(params.get(i));
             }
         }
-        String result = executeCommand(clipResults);
-        System.out.println("Command returned: "+result);
-        return result;
+        return executeCommand(clipResults);
     }
     
     private List<String> prepareInput(String input){
