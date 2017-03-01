@@ -5,6 +5,7 @@
  */
 package de.zray.se.script;
 
+import de.zray.se.script.exceptions.AliasException;
 import de.zray.se.script.exceptions.InvalidParameterValueException;
 import de.zray.se.script.exceptions.ParameterAmountException;
 import java.util.LinkedList;
@@ -17,6 +18,7 @@ import java.util.List;
 public abstract class AbstractCommand {
     private String cmd = "DEFAULT", customHelp, description = "No description.";
     private List<ParameterSet> parameterSets;
+    private List<String> aliases;
     private Console console;
     
     public AbstractCommand(String cmd, List<Parameter> params){
@@ -27,6 +29,33 @@ public abstract class AbstractCommand {
             parameterSet.setParameters(params);
             this.parameterSets.add(parameterSet);
         }
+    }
+    
+    public void addAlias(String alias) throws AliasException {
+        if(alias == null){
+            aliases = new LinkedList<>();
+            aliases.add(alias);
+        }
+        else{
+            if(!hasAlias(alias)){
+                if(aliases == null){
+                    aliases = new LinkedList<>();
+                }
+                aliases.add(alias);
+            }
+            else{
+                throw new AliasException(alias);
+            }
+        }
+    }
+    
+    public boolean hasAlias(String alias){
+        if(aliases != null){
+            if (this.aliases.stream().anyMatch((tmp) -> (tmp.equals(alias)))) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public void setConsole(Console console){

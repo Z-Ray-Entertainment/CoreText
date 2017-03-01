@@ -5,6 +5,7 @@
  */
 package de.zray.se.script;
 
+import de.zray.se.script.commands.Alias;
 import de.zray.se.script.exceptions.UnknownVariableException;
 import de.zray.se.script.commands.Echo;
 import de.zray.se.script.commands.Help;
@@ -52,6 +53,7 @@ public class Console {
         addCommand(new ParseVarValue());
         addCommand(new SetVariable());
         addCommand(new Equals());
+        addCommand(new Alias());
     }
     
     public void addCommand(AbstractCommand cmd) throws DublicateCommandException{
@@ -162,7 +164,7 @@ public class Console {
 
     private AbstractCommand getMatchingCommand(String cmd){
         for(AbstractCommand tmp : cmds){
-            if(tmp.getRootCMD().equals(cmd)){
+            if(tmp.getRootCMD().equals(cmd) || tmp.hasAlias(cmd)){
                 return tmp;
             }
         }
