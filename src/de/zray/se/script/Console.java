@@ -179,7 +179,7 @@ public class Console {
         List<String> validTiles = new LinkedList<>();
         for(String tmp : tiles){
             if(!tmp.isEmpty() || !tmp.equals(" ")){
-                validTiles.add(tmp);
+                validTiles.add(tmp.trim());
             }
         }
         return validTiles;
