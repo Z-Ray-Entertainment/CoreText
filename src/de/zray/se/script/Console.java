@@ -24,6 +24,7 @@ import de.zray.se.script.exceptions.InvalidParameterValueException;
 import de.zray.se.script.exceptions.InvalidTypeException;
 import de.zray.se.script.exceptions.ParameterAmountException;
 import de.zray.se.script.exceptions.SyntaxException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,9 +72,31 @@ public class Console {
     }
     
     public String executeCommand(String input) throws ParameterAmountException, InvalidTypeException, InvalidParameterValueException, SyntaxException {
-        List<String> validParameters = prepareInput(input);
-        validParameters = buildStrings(validParameters);
-        return executeClips(validParameters);
+        List<String> lines = buildLines(input);
+        String output = "";
+        for(String line : lines){
+            List<String> validParameters = prepareInput(line);
+            validParameters = buildStrings(validParameters);
+            output += executeClips(validParameters)+"\n";
+        }
+        return output;
+    }
+    
+    private List<String> cleanLines(List<String> lines){
+        List<String> cleaned = new LinkedList<>();
+        for(String tmp: lines){
+            if(!tmp.isEmpty()){
+                tmp = tmp.trim();
+                cleaned.add(tmp);
+            }
+        }
+        return cleaned;
+    }
+    
+    private List<String> buildLines(String input){
+        List<String> lines = new LinkedList<>();
+        lines.addAll(Arrays.asList(input.split(";")));
+        return cleanLines(lines);
     }
     
     private List<String> buildStrings(List<String> parameters){
