@@ -58,6 +58,6 @@ public class Alias extends AbstractCommand{
     }
     
     private boolean aliasExsit(String alias){
-        return getConsole().getCommands().stream().anyMatch((tmp) -> (tmp.hasAlias(alias) || tmp.getRootCMD().equals(alias)));
+        return getConsole().getCommands().stream().anyMatch((tmp) -> (tmp.hasAlias(alias)));
     }
 }
