@@ -50,12 +50,13 @@ public abstract class AbstractCommand {
     }
     
     public boolean hasAlias(String alias){
-        if(aliases != null){
-            if (this.aliases.stream().anyMatch((tmp) -> (tmp.equals(alias)))) {
-                return true;
+        if(!cmd.equals(alias)){
+            if(aliases != null){
+                return this.aliases.stream().anyMatch((tmp) -> (tmp.equals(alias)));
             }
         }
-        return false;
+        
+        return true;
     }
     
     public void setConsole(Console console){
