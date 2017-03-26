@@ -71,32 +71,84 @@ public class Console {
         return cmds;
     }
     
-    public String executeCommand(String input) throws ParameterAmountException, InvalidTypeException, InvalidParameterValueException, SyntaxException {
-        List<String> lines = buildLines(input);
-        String output = "";
-        for(String line : lines){
-            List<String> validParameters = prepareInput(line);
-            validParameters = buildStrings(validParameters);
-            output += executeClips(validParameters)+"\n";
-        }
-        return output;
-    }
-    
-    private List<String> cleanLines(List<String> lines){
-        List<String> cleaned = new LinkedList<>();
-        for(String tmp: lines){
-            if(!tmp.isEmpty()){
-                tmp = tmp.trim();
-                cleaned.add(tmp);
+    public String executeScript(String input) throws SyntaxException, ParameterAmountException, InvalidTypeException, InvalidParameterValueException{
+        List<String> codeBlocks = buildCodeBlocks(input);
+        String outputs = "";
+        for(String code : codeBlocks){
+            List<String> commandBlocks = buildCommandBlocks(code);
+            for(String command : commandBlocks){
+                outputs += executeCommand(command);
             }
         }
-        return cleaned;
+        return outputs;
+    }
+
+    private List<String> buildCommandBlocks(String codeBlock){
+        List<String> commandBlocks = new LinkedList<>();
+        int clips = 0, comandBlockStart = 0;
+        boolean string = false;
+        for(int i = 0; i < codeBlock.length(); i++){
+            switch(codeBlock.substring(i, i+1)){
+                case ";" :
+                case "\n" :
+                    commandBlocks.add(codeBlock.substring(comandBlockStart, i));
+                    comandBlockStart = i+1;
+                    break;
+                case "\"" :
+                    string = !string;
+                    break;
+                case "(" :
+                case "[" :
+                    clips++;
+                    break;
+                case ")" :
+                case "]" :
+                    clips--;
+                    break;
+            }
+        }
+        return commandBlocks;
     }
     
-    private List<String> buildLines(String input){
-        List<String> lines = new LinkedList<>();
-        lines.addAll(Arrays.asList(input.split(";")));
-        return cleanLines(lines);
+    private List<String> buildCodeBlocks(String input) throws SyntaxException{
+        List<String> blocks = new LinkedList<>();
+        boolean string = false;
+        int start = 0, clips = 0;
+        for(int i = 0; i < input.length(); i++){
+            switch(input.substring(i, i+1)){
+                case "\n":
+                case ";" :
+                    if(!string && clips == 0){
+                        blocks.add(input.substring(start, i+1).trim());
+                        System.out.println("CodeBlock: "+blocks.get(blocks.size()-1));
+                        start = i+1;
+                    }
+                    break;
+                case "\"" :
+                    string = !string;
+                    break;
+                case "[" :
+                case "(" :
+                    clips++;
+                    break;
+                case "]" :
+                case ")" :
+                    clips--;
+                    break;
+            }
+        }
+        if(string || clips > 0){
+            throw new SyntaxException("The given script is not valid, open strings: "+string+" open clips: "+clips);
+        }
+        return blocks;
+    }
+    
+    public String executeCommand(String input) throws ParameterAmountException, InvalidTypeException, InvalidParameterValueException, SyntaxException {
+        String output = "";
+        List<String> validParameters = prepareInput(input);
+        validParameters = buildStrings(validParameters);
+        output += executeClips(validParameters)+"\n";
+        return output;
     }
     
     private List<String> buildStrings(List<String> parameters){
