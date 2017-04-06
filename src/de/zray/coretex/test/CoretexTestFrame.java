@@ -30,10 +30,9 @@ public class CoretexTestFrame extends javax.swing.JFrame{
         
         try {
             seConsole = new Console();
-            seConsole.addCommand(new Add());
         }
         catch (DublicateCommandException ex) {
-            jTA_Log.append("[ERROR]: "+ex.getMessage());
+            jTA_Log.append("[ERROR]: "+ex.getMessage()+"\n");
         }
     }
 
@@ -154,7 +153,11 @@ public class CoretexTestFrame extends javax.swing.JFrame{
     // End of variables declaration//GEN-END:variables
 
     private void send(){
-        jTA_Log.append(issueCommand(jTA_Input.getText())+"\n");
+        String output = issueCommand(jTA_Input.getText());
+        if(!output.isEmpty()){
+            jTA_Log.append(output+"\n");
+        }
+        
         jTA_Input.setText("");
     }
     
