@@ -169,6 +169,6 @@ public class CoretexTestFrame extends javax.swing.JFrame{
         } catch (ParameterAmountException | InvalidTypeException | InvalidParameterValueException ex) {
             jTA_Log.append("[ERROR]: "+ex.getMessage()+"\n");
         }
-        return "Error while exectuing: "+input;
+        return "[ERROR]: while exectuing: "+input;
     }
 }
