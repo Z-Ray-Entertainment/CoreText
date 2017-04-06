@@ -17,6 +17,8 @@ import de.zray.coretex.commands.algebra.Mod;
 import de.zray.coretex.commands.algebra.Mult;
 import de.zray.coretex.commands.algebra.Sub;
 import de.zray.coretex.commands.bools.Equals;
+import de.zray.coretex.commands.bools.If;
+import de.zray.coretex.commands.bools.NotEqual;
 import de.zray.coretex.commands.variables.ParseVarValue;
 import de.zray.coretex.commands.variables.SetVariable;
 import de.zray.coretex.exceptions.DublicateCommandException;
@@ -54,7 +56,9 @@ public class Console {
         addCommand(new ParseVarValue());
         addCommand(new SetVariable());
         addCommand(new Equals());
+        addCommand(new NotEqual());
         addCommand(new Alias());
+        addCommand(new If());
     }
     
     public void addCommand(AbstractCommand cmd) throws DublicateCommandException{
