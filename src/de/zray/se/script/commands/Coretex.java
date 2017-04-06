@@ -5,8 +5,8 @@
  */
 package de.zray.se.script.commands;
 
-import de.zray.se.script.AbstractCommand;
-import de.zray.se.script.Parameter;
+import de.zray.coretex.AbstractCommand;
+import de.zray.coretex.Parameter;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -7,7 +7,6 @@ package de.zray.coretex.commands.bools;
 
 import de.zray.coretex.AbstractCommand;
 import de.zray.coretex.Parameter;
-import de.zray.coretex.ParameterSet;
 import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;
