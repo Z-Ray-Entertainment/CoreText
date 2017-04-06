@@ -56,7 +56,7 @@ public abstract class AbstractCommand {
             }
         }
         
-        return true;
+        return false;
     }
     
     public void setConsole(Console console){
