@@ -26,7 +26,6 @@ import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.exceptions.SyntaxException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
