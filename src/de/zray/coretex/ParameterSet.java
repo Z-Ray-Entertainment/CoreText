@@ -45,6 +45,7 @@ public class ParameterSet {
             Parameter tmpParam = new Parameter(this.parameters.get(i).getType());
             tmpParam.setValue(parameters.get(i));
             buildedParams.add(tmpParam);
+            System.out.println("Builded Param: "+tmpParam.getValue());
         }
         return buildedParams;
     }

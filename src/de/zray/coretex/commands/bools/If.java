@@ -41,11 +41,9 @@ public class If extends AbstractCommand{
             System.out.println("ELSE: "+elseBlock);
             switch(params.get(0).getValue()){
                 case "true" :
-                    getConsole().executeScript(thenBlock+";");
-                    break;
+                    return getConsole().executeScript(thenBlock+";");
                 case "false" :
-                    getConsole().executeScript(elseBlock+";");
-                    break;
+                    return getConsole().executeScript(elseBlock+";");
             }
         }
         catch (SyntaxException | ParameterAmountException | InvalidTypeException | InvalidParameterValueException ex) {
