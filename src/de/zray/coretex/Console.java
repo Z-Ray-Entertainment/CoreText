@@ -76,7 +76,7 @@ public class Console {
     }
     
     public String executeScript(String input) throws SyntaxException, ParameterAmountException, InvalidTypeException, InvalidParameterValueException{
-        List<String> codeBlocks = buildCodeBlocks(input);
+        List<String> codeBlocks = buildCodeFragments(input);
         String outputs = "";
         for(String code : codeBlocks){
             List<String> commandBlocks = buildCommandBlocks(code);
@@ -114,7 +114,7 @@ public class Console {
         return commandBlocks;
     }
     
-    private List<String> buildCodeBlocks(String input) throws SyntaxException{
+    private List<String> buildCodeFragments(String input) throws SyntaxException{
         List<String> blocks = new LinkedList<>();
         boolean string = false;
         int start = 0, clips = 0;
@@ -150,31 +150,75 @@ public class Console {
     public String executeCommand(String input) throws ParameterAmountException, InvalidTypeException, InvalidParameterValueException, SyntaxException {
         String output = "";
         List<String> validParameters = prepareInput(input);
+        validParameters = buildCodeBlocks(validParameters);
         validParameters = buildStrings(validParameters);
         output += executeClips(validParameters)+"\n";
         return output;
     }
     
+    private List<String> buildCodeBlocks(List<String> parameters){
+        List<String> allWithBlocks = new LinkedList<>();
+        boolean block= false;
+        String codeBlock = "";
+        for(String tmp : parameters){
+            for(int i = 0; i < tmp.length(); i++){
+                if(tmp.substring(i, i+1).equals("[") && !block){
+                    block = true;
+                }
+                else if(tmp.substring(i, i+1).equals("]") && block){
+                    block = false;
+                    codeBlock += "]";
+                    allWithBlocks.add(codeBlock);
+                    codeBlock = "";
+                }
+                else if(block) {
+                    codeBlock += tmp.substring(i, i+1);
+                }
+            }
+            if(block && !codeBlock.isEmpty()){
+                codeBlock += " ";
+            }
+            else if(!block && codeBlock.isEmpty()){
+                allWithBlocks.add(tmp);
+            }
+        }
+        
+        return allWithBlocks;
+    }
+    
     private List<String> buildStrings(List<String> parameters){
         List<String> params = new LinkedList<>();
         
-        boolean inString = false;
-        String cmd = "";
+        boolean inString = false, inBlock = false;
+        String string = "";
         for(String tmp : parameters){
-            if(tmp.startsWith("\"")){
-                inString = true;
-                tmp = tmp.substring(1);
+            for(int i = 0; i < tmp.length(); i++){
+                if(tmp.substring(i, i+1).equals("\"") && !inBlock && !inString){
+                    inString = true;
+                    i++;
+                }
+                else if(tmp.substring(i, i+1).equals("\"") && !inBlock && inString){
+                    inString = false;
+                }
+                else if(tmp.substring(i, i+1).equals("[") && !inBlock && !inString){
+                    inBlock = true;
+                }
+                else if(tmp.substring(i, i+1).equals("]") && inBlock && !inString){
+                    inBlock = false;
+                }
+                if(inString){
+                    string += tmp.substring(i, i+1);
+                }
             }
-            if(inString){
-                cmd += tmp+" ";
-            }
-            else{
+            if(!inString && string.isEmpty()){
                 params.add(tmp);
             }
-            if(tmp.endsWith("\"")){
-                inString = false;
-                cmd = cmd.substring(0, cmd.length()-2);
-                params.add(cmd);
+            else if(!inString && !string.isEmpty()){
+                params.add(string);
+                string = "";
+            }
+            else{
+                    string += " ";
             }
         }
         return params;
@@ -224,7 +268,7 @@ public class Console {
     private List<String> prepareInput(String input){
         List<String> validTiles = new LinkedList<>();
         if(input != null && !input.isEmpty()){
-            input = input.replace("\t", "");
+            input = input.trim();
             String tiles[] = input.split(" ");
             validTiles = removeEmpty(tiles);
         }
