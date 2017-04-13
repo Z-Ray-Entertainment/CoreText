@@ -156,33 +156,41 @@ public class Console {
         return output;
     }
     
-    private List<String> buildCodeBlocks(List<String> parameters){
+    private List<String> buildCodeBlocks(List<String> parameters) throws SyntaxException{
         List<String> allWithBlocks = new LinkedList<>();
-        boolean block= false;
         String codeBlock = "";
+        int clipCtc = 0;
         for(String tmp : parameters){
             for(int i = 0; i < tmp.length(); i++){
-                if(tmp.substring(i, i+1).equals("[") && !block){
-                    block = true;
+                if(tmp.substring(i, i+1).equals("[")){
+                    clipCtc++;
                 }
-                else if(tmp.substring(i, i+1).equals("]") && block){
-                    block = false;
-                    codeBlock += "]";
-                    allWithBlocks.add(codeBlock);
-                    codeBlock = "";
+                else if(tmp.substring(i, i+1).equals("]")){
+                    clipCtc--;  
+                    if(clipCtc == 0){
+                        codeBlock += "]";
+                    }
                 }
-                else if(block) {
+                if(clipCtc > 0){
                     codeBlock += tmp.substring(i, i+1);
                 }
             }
-            if(block && !codeBlock.isEmpty()){
+            if(clipCtc > 0 && !codeBlock.isEmpty()){
                 codeBlock += " ";
             }
-            else if(!block && codeBlock.isEmpty()){
+            else if(clipCtc == 0 && !codeBlock.isEmpty()){
+                allWithBlocks.add(codeBlock);
+                System.out.println("CodeBlock: "+codeBlock);
+                codeBlock = "";
+            }
+            else if(clipCtc == 0 && codeBlock.isEmpty()){
                 allWithBlocks.add(tmp);
             }
         }
         
+        if(clipCtc > 0 || !codeBlock.isEmpty()){
+            throw new SyntaxException("Not a valid CodeBlock Syntax!");
+        }
         return allWithBlocks;
     }
     
