@@ -36,13 +36,15 @@ public class If extends AbstractCommand{
     public String action(List<Parameter> params) {
         try {
             String thenBlock = params.get(1).getValue().substring(1, params.get(1).getValue().length()-1);
-            String elseBlock = params.get(2).getValue().substring(2, params.get(2).getValue().length()-1);
+            System.out.println("THEN: "+thenBlock);
+            String elseBlock = params.get(2).getValue().substring(1, params.get(2).getValue().length()-1);
+            System.out.println("ELSE: "+elseBlock);
             switch(params.get(0).getValue()){
                 case "true" :
-                    getConsole().executeScript(thenBlock);
+                    getConsole().executeScript(thenBlock+";");
                     break;
                 case "false" :
-                    getConsole().executeScript(elseBlock);
+                    getConsole().executeScript(elseBlock+";");
                     break;
             }
         }
