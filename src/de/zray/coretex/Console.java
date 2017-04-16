@@ -26,6 +26,10 @@ import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.exceptions.SyntaxException;
+import de.zray.coretex.syntax.ClipRule;
+import de.zray.coretex.syntax.SemicolonRule;
+import de.zray.coretex.syntax.StringRule;
+import de.zray.coretex.syntax.SyntaxRule;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,11 +39,19 @@ import java.util.List;
  */
 public class Console {
     private List<AbstractCommand> cmds = new LinkedList<>();
+    private List<SyntaxRule> rules = new LinkedList<>();
     private VariableStore varStore;
     
     public Console() throws DublicateCommandException{
         this.varStore = new VariableStore();
         initDefaultCMDs();
+        initDefualtRules();
+    }
+    
+    private void initDefualtRules(){
+        addRule(new ClipRule());
+        addRule(new SemicolonRule());
+        addRule(new StringRule());
     }
     
     private void initDefaultCMDs() throws DublicateCommandException{
@@ -60,6 +72,10 @@ public class Console {
         addCommand(new If());
     }
     
+    public void addRule(SyntaxRule rule){
+        rules.add(rule);
+    }
+    
     public void addCommand(AbstractCommand cmd) throws DublicateCommandException{
         for(AbstractCommand tmp : cmds){
             if(tmp.getRootCMD().equals(cmd.getRootCMD())){
@@ -75,6 +91,7 @@ public class Console {
     }
     
     public String executeScript(String input) throws SyntaxException, ParameterAmountException, InvalidTypeException, InvalidParameterValueException{
+        checkSyntax(input);
         List<String> codeBlocks = buildCodeFragments(input);
         String outputs = "";
         for(String code : codeBlocks){
@@ -86,6 +103,23 @@ public class Console {
         return outputs;
     }
 
+    private void checkSyntax(String input) throws SyntaxException{
+        rules.stream().forEach((tmp) -> {
+            tmp.reset();
+        });
+        
+        for(int i = 0; i < input.length(); i++){
+            String curChar = input.substring(i, i+1);
+            System.out.println("Char: "+curChar);
+            for(SyntaxRule tmp : rules){
+                tmp.check(curChar);
+            }
+        }
+        for(SyntaxRule rule : rules){
+            rule.endOfScript();
+        }
+    }
+    
     private List<String> buildCommandBlocks(String codeBlock){
         List<String> commandBlocks = new LinkedList<>();
         int clips = 0, comandBlockStart = 0;
@@ -146,7 +180,7 @@ public class Console {
         return blocks;
     }
     
-    public String executeCommand(String input) throws ParameterAmountException, InvalidTypeException, InvalidParameterValueException, SyntaxException {
+    private String executeCommand(String input) throws ParameterAmountException, InvalidTypeException, InvalidParameterValueException, SyntaxException {
         String output = "";
         List<String> validParameters = prepareInput(input);
         validParameters = buildCodeBlocks(validParameters);

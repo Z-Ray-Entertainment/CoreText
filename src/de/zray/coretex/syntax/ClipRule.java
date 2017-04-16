@@ -1,0 +1,50 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package de.zray.coretex.syntax;
+
+import de.zray.coretex.exceptions.SyntaxException;
+
+/**
+ *
+ * @author vortex
+ */
+public class ClipRule implements SyntaxRule{
+    int roundClips = 0, squareClips = 0;
+    
+    
+    @Override
+    public void check(String currentCharacter) throws SyntaxException {
+        System.out.println("Check for clips: "+currentCharacter);
+        switch(currentCharacter){
+            case "(" :
+                roundClips++;
+                break;
+            case ")" :
+                roundClips--;
+                break;
+            case "[" :
+                squareClips++;
+                break;
+            case "]" :
+                squareClips--;
+                break;
+        }
+    }
+
+    @Override
+    public void endOfScript() throws SyntaxException {
+        if(roundClips != 0 || squareClips != 0){
+            throw new SyntaxException("Amount of Clips is not valid. Round: "+roundClips+" square: "+squareClips);
+        }
+    }
+
+    @Override
+    public void reset() {
+        roundClips = 0;
+        squareClips = 0;
+    }
+    
+}
