@@ -14,72 +14,39 @@ import java.util.Stack;
  * @author vortex
  */
 public class StateRule implements SyntaxRule{
+    private static final int IDLE = 0, READING_STATE = 1, WAIT_FOR_STATE_TO_CLOSE = 2, READING_CLOSE_STATE = 4;
     //<state>
     //</state>
     Stack<String> stateStack = new Stack<>();
     String currentState = "";
-    int mode = 0;
+    int mode = IDLE;
     boolean increase = true;
     
     @Override
     public void check(String currentCharacter) throws SyntaxException {
         switch(currentCharacter){
             case "<" :
-                if(newState && stateClosed){
-                    throw new SyntaxException("Error in StateSyntax expected something like: <state>...</state>");
-                }
-                else if (!stateClosed && !newState){
-                    mayClosed = true;
-                }
-                newState = true;
-                stateClosed = false;
+                
                 break;
             case ">" :
-                if(newState && !stateClosed){
-                    newState = false;
-                    stateStack.add(currentState);
-                    currentState = "";
-                }
-                else if(mayClosed && willClose){
-                    String lastState = stateStack.pop();
-                    if(!lastState.equals(currentState)){
-                        throw new SyntaxException("The wrong state was closed, expected: "+lastState+" found: "+currentState);
-                    }
-                }
-                else if(newState){
-                    
-                }
-                else{
-                    throw new SyntaxException("Error in StateSyntax: <state>...</state>");
-                }
+                
                 break;
             case "/" :
-                if(!newState && !stateClosed && mayClosed){
-                    willClose = true;
-                }
+               
                 break;
             default :
-                if((newState && !stateClosed) || (mayClosed || willClose)){
-                    currentState += currentCharacter;
-                }
+                
                 break;
         }
     }
 
     @Override
     public void endOfScript() throws SyntaxException {
-        if(newState || !stateClosed || mayClosed || willClose || !currentState.isEmpty()){
-            throw new SyntaxException("There are open states.");
-        }
+       
     }
 
     @Override
     public void reset() {
-        newState = false;
-        stateClosed = true;
-        mayClosed = false;
-        willClose = false;
-        currentState = "";
     }
     
 }
