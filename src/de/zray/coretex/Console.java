@@ -28,13 +28,15 @@ import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.exceptions.SyntaxException;
 import de.zray.coretex.syntax.ClipRule;
 import de.zray.coretex.syntax.SemicolonRule;
+import de.zray.coretex.syntax.StateRule;
 import de.zray.coretex.syntax.StringRule;
 import de.zray.coretex.syntax.SyntaxRule;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
+ * Copyright by Imo "Vortex Acherontic" Hester and/or Z-Ray Entertainment
+ * @company Z-Ray Entertainment
  * @author Vortex Acherontic
  */
 public class Console {
@@ -52,6 +54,7 @@ public class Console {
         addRule(new ClipRule());
         addRule(new SemicolonRule());
         addRule(new StringRule());
+        addRule(new StateRule());
     }
     
     private void initDefaultCMDs() throws DublicateCommandException{
