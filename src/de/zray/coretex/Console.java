@@ -47,10 +47,10 @@ public class Console {
     public Console() throws DublicateCommandException{
         this.varStore = new VariableStore();
         initDefaultCMDs();
-        initDefualtRules();
+        initDefaultRules();
     }
     
-    private void initDefualtRules(){
+    private void initDefaultRules(){
         addRule(new ClipRule());
         addRule(new SemicolonRule());
         addRule(new StringRule());
