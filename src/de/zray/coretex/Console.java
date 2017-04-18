@@ -95,9 +95,9 @@ public class Console {
     
     public String executeScript(String input) throws SyntaxException, ParameterAmountException, InvalidTypeException, InvalidParameterValueException{
         checkSyntax(input);
-        List<String> codeBlocks = buildCodeFragments(input);
+        List<String> fragments = buildCodeFragments(input);
         String outputs = "";
-        for(String code : codeBlocks){
+        for(String code : fragments){
             List<String> commandBlocks = buildCommandBlocks(code);
             for(String command : commandBlocks){
                 outputs += executeCommand(command);
@@ -105,7 +105,7 @@ public class Console {
         }
         return outputs;
     }
-
+    
     private void checkSyntax(String input) throws SyntaxException{
         rules.stream().forEach((tmp) -> {
             tmp.reset();
@@ -125,7 +125,7 @@ public class Console {
     
     private List<String> buildCommandBlocks(String codeBlock){
         List<String> commandBlocks = new LinkedList<>();
-        int clips = 0, comandBlockStart = 0;
+        int comandBlockStart = 0;
         boolean string = false;
         for(int i = 0; i < codeBlock.length(); i++){
             switch(codeBlock.substring(i, i+1)){
@@ -137,20 +137,12 @@ public class Console {
                 case "\"" :
                     string = !string;
                     break;
-                case "(" :
-                case "[" :
-                    clips++;
-                    break;
-                case ")" :
-                case "]" :
-                    clips--;
-                    break;
             }
         }
         return commandBlocks;
     }
     
-    private List<String> buildCodeFragments(String input) throws SyntaxException{
+    private List<String> buildCodeFragments(String input){
         List<String> blocks = new LinkedList<>();
         boolean string = false;
         int start = 0, clips = 0;
@@ -169,16 +161,15 @@ public class Console {
                     break;
                 case "[" :
                 case "(" :
+                case "<" :
                     clips++;
                     break;
                 case "]" :
                 case ")" :
+                case ">" :
                     clips--;
                     break;
             }
-        }
-        if(string || clips > 0){
-            throw new SyntaxException("The given script is not valid, open strings: "+string+" open clips: "+clips);
         }
         return blocks;
     }
