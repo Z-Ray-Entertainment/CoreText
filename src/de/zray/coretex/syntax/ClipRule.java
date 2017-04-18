@@ -12,7 +12,7 @@ import de.zray.coretex.exceptions.SyntaxException;
  * @author vortex
  */
 public class ClipRule implements SyntaxRule{
-    int roundClips = 0, squareClips = 0;
+    int clips = 0;
     
     
     @Override
@@ -20,31 +20,28 @@ public class ClipRule implements SyntaxRule{
         System.out.println("Check for clips: "+currentCharacter);
         switch(currentCharacter){
             case "(" :
-                roundClips++;
+            case "[" :
+            case "<" :
+                clips++;
                 break;
             case ")" :
-                roundClips--;
-                break;
-            case "[" :
-                squareClips++;
-                break;
             case "]" :
-                squareClips--;
+            case ">" :
+                clips--;
                 break;
         }
     }
 
     @Override
     public void endOfScript() throws SyntaxException {
-        if(roundClips != 0 || squareClips != 0){
-            throw new SyntaxException("Amount of Clips is not valid. Round: "+roundClips+" square: "+squareClips);
+        if(clips != 0){
+            throw new SyntaxException("Open clips found");
         }
     }
 
     @Override
     public void reset() {
-        roundClips = 0;
-        squareClips = 0;
+        clips = 0;
     }
     
 }
