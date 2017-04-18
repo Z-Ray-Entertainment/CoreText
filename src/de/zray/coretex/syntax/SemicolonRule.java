@@ -19,7 +19,6 @@ public class SemicolonRule implements SyntaxRule{
         switch(currentCharacter){
             case ";" :
                 semicolon = true;
-                System.out.println("Found Semicolon");
                 break;
         }
     }
