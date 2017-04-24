@@ -20,6 +20,7 @@ import de.zray.coretex.commands.algebra.Sub;
 import de.zray.coretex.commands.bools.Equals;
 import de.zray.coretex.commands.bools.If;
 import de.zray.coretex.commands.bools.NotEqual;
+import de.zray.coretex.commands.filesystem.FileSystem;
 import de.zray.coretex.commands.variables.ParseVarValue;
 import de.zray.coretex.commands.variables.SetVariable;
 import de.zray.coretex.exceptions.DublicateCommandException;
@@ -87,6 +88,7 @@ public class Console {
         addCommand(new NotEqual());
         addCommand(new Alias());
         addCommand(new If());
+        addCommand(new FileSystem());
     }
     
     public void addRule(SyntaxRule rule){
