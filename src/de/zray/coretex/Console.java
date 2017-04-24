@@ -44,10 +44,21 @@ public class Console {
     private List<SyntaxRule> rules = new LinkedList<>();
     private VariableStore varStore;
     
-    public Console() throws DublicateCommandException{
+     public Console() throws DublicateCommandException{
         this.varStore = new VariableStore();
         initDefaultCMDs();
         initDefaultRules();
+    }
+    
+    public Console(boolean defaultCMDs, boolean defaultSyntax) throws DublicateCommandException{
+        this.varStore = new VariableStore();
+        if(defaultCMDs){
+            initDefaultCMDs();
+        }
+        if(defaultSyntax){
+            initDefaultRules();
+        }
+        
     }
     
     private void initDefaultRules(){
