@@ -17,7 +17,6 @@ public class ClipRule implements SyntaxRule{
     
     @Override
     public void check(String currentCharacter) throws SyntaxException {
-        System.out.println("Check for clips: "+currentCharacter);
         switch(currentCharacter){
             case "(" :
             case "[" :
