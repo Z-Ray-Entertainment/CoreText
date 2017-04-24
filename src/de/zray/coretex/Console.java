@@ -6,6 +6,7 @@
 package de.zray.coretex;
 
 import de.zray.coretex.commands.Alias;
+import de.zray.coretex.commands.Coretex;
 import de.zray.coretex.exceptions.UnknownVariableException;
 import de.zray.coretex.commands.Echo;
 import de.zray.coretex.commands.Help;
@@ -46,12 +47,14 @@ public class Console {
     
      public Console() throws DublicateCommandException{
         this.varStore = new VariableStore();
+        addCommand(new Coretex());
         initDefaultCMDs();
         initDefaultRules();
     }
     
     public Console(boolean defaultCMDs, boolean defaultSyntax) throws DublicateCommandException{
         this.varStore = new VariableStore();
+        addCommand(new Coretex());
         if(defaultCMDs){
             initDefaultCMDs();
         }

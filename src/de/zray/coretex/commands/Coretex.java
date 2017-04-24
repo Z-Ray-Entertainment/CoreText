@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.se.script.commands;
+package de.zray.coretex.commands;
 
 import de.zray.coretex.AbstractCommand;
 import de.zray.coretex.Parameter;
@@ -15,7 +15,6 @@ import java.util.List;
  * @author Vortex Acherontic
  */
 public class Coretex extends AbstractCommand{
-
     public Coretex() {
         super("coretex", null);
         Parameter param1 = new Parameter(Parameter.Type.STRING);
