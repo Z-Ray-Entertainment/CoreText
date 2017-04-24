@@ -13,6 +13,7 @@ import de.zray.coretex.exceptions.SyntaxException;
  */
 public class SemicolonRule implements SyntaxRule{
     boolean semicolon = false;
+    String lastSign = "";
 
     @Override
     public void check(String currentCharacter) throws SyntaxException {
@@ -20,12 +21,15 @@ public class SemicolonRule implements SyntaxRule{
             case ";" :
                 semicolon = true;
                 break;
+            default :
+                lastSign = currentCharacter;
+                break;
         }
     }
 
     @Override
     public void endOfScript() throws SyntaxException {
-        if(!semicolon){
+        if(!semicolon && !lastSign.equals(">")){
             throw new SyntaxException("No semicolon in script");
         }
     }
@@ -33,5 +37,6 @@ public class SemicolonRule implements SyntaxRule{
     @Override
     public void reset() {
         semicolon = false;
+        lastSign = "";
     }
 }
