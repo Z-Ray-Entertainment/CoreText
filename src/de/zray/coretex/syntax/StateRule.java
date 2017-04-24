@@ -6,7 +6,6 @@
 package de.zray.coretex.syntax;
 
 import de.zray.coretex.exceptions.SyntaxException;
-import java.util.Stack;
 
 /**
  * Copyright by Imo "Vortex Acherontic" Hester and/or Z-Ray Entertainment
@@ -15,18 +14,17 @@ import java.util.Stack;
  */
 public class StateRule implements SyntaxRule{
     private static enum Mode{WAIT_FOR_OPENING_STATE, READ_OPENING_STATE, 
-    WAIT_FOR_CLOSEING_STATE, READING_CLOSING_STATE, SUB_STATE, DONE};
+    WAIT_FOR_CLOSEING_STATE, READING_CLOSING_STATE, DONE, STATE_MAY_CLOSE, SUB_STATE};
     //<state>
     //</state>
     String currentState = "", lastState = "";
     Mode mode = Mode.WAIT_FOR_OPENING_STATE;
     StateRule subState;
-    boolean initedByParent = false;
+    boolean string = false;
     
     public StateRule(){}
-    public StateRule(String state){
-        initedByParent = true;
-        lastState = state;
+    public StateRule(Mode stateMode){
+        this.mode = stateMode;
     }
     
     public Mode getCurrentMode(){
@@ -35,15 +33,11 @@ public class StateRule implements SyntaxRule{
     
     @Override
     public void check(String currentCharacter) throws SyntaxException {
-        if(mode == Mode.SUB_STATE){
-            if(subState != null){
-                subState = new StateRule();
-            }
+        if(subState != null){
             subState.check(currentCharacter);
-            switch(subState.getCurrentMode()){
-                case DONE :
-                    mode = Mode.WAIT_FOR_CLOSEING_STATE;
-                    break;
+            if(subState.getCurrentMode() == Mode.DONE){
+                subState = null;
+                check(currentCharacter);
             }
         }
         else{
@@ -54,72 +48,79 @@ public class StateRule implements SyntaxRule{
                             mode = Mode.READ_OPENING_STATE;
                             break;
                         case READ_OPENING_STATE :
-                            throw new SyntaxException("< is not allowd within a state name.");
-                        case WAIT_FOR_CLOSEING_STATE :
-                            mode = Mode.READING_CLOSING_STATE;
-                            break;
                         case READING_CLOSING_STATE :
-                            throw new SyntaxException("< is not allowd within a state name.");
+                            throw new SyntaxException(currentCharacter+" is not a allowed character with in a state name.");
+                        case WAIT_FOR_CLOSEING_STATE :
+                        case SUB_STATE :
+                            mode = Mode.STATE_MAY_CLOSE;
+                            break;
+                        case STATE_MAY_CLOSE :
+                            throw new SyntaxException(currentCharacter+" is not allowed here, expected / for closing the current state.");
                     }
                     break;
                 case ">" :
                     switch(mode){
-                        case WAIT_FOR_OPENING_STATE :
-                            throw new SyntaxException("> is not a valid character outside a state.");
-                        case READ_OPENING_STATE :
-                            mode = Mode.WAIT_FOR_CLOSEING_STATE;
-                            lastState = currentState;
-                            break;
                         case WAIT_FOR_CLOSEING_STATE :
-                            throw new SyntaxException("> is not a valid Character outside a state");
+                        case WAIT_FOR_OPENING_STATE :
+                            if(!string){
+                                throw new SyntaxException(currentCharacter+" is not allowed outside a string or for indicating the next state.");
+                            }
+                        case READ_OPENING_STATE :
+                            lastState = currentState;
+                            currentState = "";
+                            mode = Mode.WAIT_FOR_CLOSEING_STATE;
+                            break;
                         case READING_CLOSING_STATE :
-                            if(!lastState.equals(currentState)){
-                                mode = Mode.SUB_STATE;
-                                subState = new StateRule(currentState);
-                                currentState = "";
+                            if(currentState.equals(lastState)){
+                                mode = Mode.DONE;
                             }
                             else{
-                                if(initedByParent){
-                                    mode = Mode.DONE;
-                                }
-                                else{
-                                    reset();
-                                }
+                                throw new SyntaxException(lastState+" was expected but "+currentState+" found.");
                             }
                             break;
-                    } 
+                    }
                     break;
                 case "/" :
                     switch(mode){
-                        case WAIT_FOR_OPENING_STATE :
-                            throw new SyntaxException("/ is not a valid character outside a state");
-                        case READ_OPENING_STATE :
-                            throw new SyntaxException("/ is not a valid character in an opening state");
-                        case WAIT_FOR_CLOSEING_STATE :
-                            throw new SyntaxException("/ is not a valid character outside a state");
+                        case STATE_MAY_CLOSE :
+                            mode = Mode.READING_CLOSING_STATE;
+                            break;
                         case READING_CLOSING_STATE :
+                        case READ_OPENING_STATE :
+                        case WAIT_FOR_CLOSEING_STATE :
+                        case WAIT_FOR_OPENING_STATE :
+                            if(!string){
+                                throw new SyntaxException(currentCharacter+" is not allowed outside a string, only to indicate a state to close.");
+                            }
                             break;
                     }
-                default :
+                    break;
+                case "\"" :
+                    string = !string;
+                    break;
+                default:
                     switch(mode){
-                        case WAIT_FOR_CLOSEING_STATE :
-                        case WAIT_FOR_OPENING_STATE :
-                            break;
                         case READING_CLOSING_STATE :
                         case READ_OPENING_STATE :
                             currentState += currentCharacter;
+                            break;
+                        case STATE_MAY_CLOSE :
+                            subState = new StateRule(Mode.READ_OPENING_STATE);
+                            subState.check(currentCharacter);
+                            mode = Mode.SUB_STATE;
                             break;
                     }
                     break;
             }
         }
-        
     }
 
     @Override
     public void endOfScript() throws SyntaxException {
-        if(mode != Mode.WAIT_FOR_OPENING_STATE || !currentState.isEmpty() || !lastState.isEmpty()){
-            throw new SyntaxException("States are not valid.");
+        if(mode != Mode.DONE){
+            if(mode != Mode.WAIT_FOR_OPENING_STATE){
+                throw new SyntaxException(lastState+" was not closed.");
+            }
         }
     }
 
@@ -128,6 +129,7 @@ public class StateRule implements SyntaxRule{
         mode = Mode.WAIT_FOR_OPENING_STATE;
         currentState = "";
         lastState = "";
+        string = false;
     }
     
 }
