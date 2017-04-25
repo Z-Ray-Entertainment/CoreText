@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex.commands.bools;
+package de.zray.coretex.defaults.commands;
 
-import de.zray.coretex.AbstractCommand;
-import de.zray.coretex.Parameter;
+import de.zray.coretex.command.AbstractCommand;
+import de.zray.coretex.command.Parameter;
 import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex;
+package de.zray.coretex.command;
 
 import de.zray.coretex.exceptions.InvalidParameterValueException;
 

@@ -6,7 +6,7 @@
 package de.zray.coretex.test;
 
 import de.zray.coretex.Console;
-import de.zray.coretex.commands.algebra.Add;
+import de.zray.coretex.defaults.commands.algebra.Add;
 import de.zray.coretex.exceptions.DublicateCommandException;
 import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;

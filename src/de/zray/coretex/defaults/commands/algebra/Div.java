@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex.commands.algebra;
+package de.zray.coretex.defaults.commands.algebra;
 
-import de.zray.coretex.AbstractCommand;
-import de.zray.coretex.Parameter;
-import de.zray.coretex.ParameterSet;
+import de.zray.coretex.command.AbstractCommand;
+import de.zray.coretex.command.Parameter;
+import de.zray.coretex.command.ParameterSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,10 +15,10 @@ import java.util.List;
  *
  * @author Vortex Acherontic
  */
-public class Sub extends AbstractCommand{
+public class Div extends AbstractCommand {
 
-    public Sub() {
-        super("sub", null);
+    public Div() {
+        super("div", null);
         Parameter var1 = new Parameter(Parameter.Type.DOUBLE);
         Parameter var2 = new Parameter(Parameter.Type.DOUBLE);
         List<Parameter> paramList = new LinkedList<>();
@@ -30,7 +30,7 @@ public class Sub extends AbstractCommand{
     @Override
     public String action(List<Parameter> params) {
         double v1 = Double.parseDouble(params.get(0).getValue()), v2 = Double.parseDouble(params.get(1).getValue());
-        return String.valueOf((v1-v2));
+        return String.valueOf((v1/v2));
     }
     
 }

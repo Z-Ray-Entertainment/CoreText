@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex.commands.variables;
+package de.zray.coretex.defaults.commands.variables;
 
-import de.zray.coretex.AbstractCommand;
+import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.exceptions.InvalidVarTypeException;
-import de.zray.coretex.Parameter;
+import de.zray.coretex.command.Parameter;
 import de.zray.coretex.Variable;
 import de.zray.coretex.exceptions.UnknownVariableException;
 import java.util.LinkedList;

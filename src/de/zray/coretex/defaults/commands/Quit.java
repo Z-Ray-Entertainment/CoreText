@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex.commands;
+package de.zray.coretex.defaults.commands;
 
-import de.zray.coretex.AbstractCommand;
-import de.zray.coretex.Parameter;
+import de.zray.coretex.command.AbstractCommand;
+import de.zray.coretex.command.Parameter;
 import java.util.List;
 
 /**

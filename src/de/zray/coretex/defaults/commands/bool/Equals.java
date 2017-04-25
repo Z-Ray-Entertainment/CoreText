@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex.commands.bools;
+package de.zray.coretex.defaults.commands.bool;
 
-import de.zray.coretex.AbstractCommand;
-import de.zray.coretex.Parameter;
+import de.zray.coretex.command.AbstractCommand;
+import de.zray.coretex.command.Parameter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,9 +14,9 @@ import java.util.List;
  *
  * @author Vortex Acherontic
  */
-public class NotEqual extends AbstractCommand{
-    public NotEqual() {
-        super("!=", null);
+public class Equals extends AbstractCommand{
+    public Equals() {
+        super("==", null);
         Parameter var1 = new Parameter(Parameter.Type.STRING);
         Parameter var2 = new Parameter(Parameter.Type.STRING);
         List<Parameter> paramList = new LinkedList<>();
@@ -28,10 +28,10 @@ public class NotEqual extends AbstractCommand{
     @Override
     public String action(List<Parameter> params) {
         if(params.get(0).getValue().equals(params.get(1).getValue())){
-            return "false";
+            return "true";
         }
         else{
-            return "true";
+            return "false";
         }
     }
     

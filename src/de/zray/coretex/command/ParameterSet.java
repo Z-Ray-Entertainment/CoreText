@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex.commands.filesystem;
+package de.zray.coretex.command;
+
+import java.util.List;
 
 /**
  *
  * @author Vortex Acherontic
  */
-public class FileWriter {
-    public String writeFile(String content, String filePath){
-        return "Wrote File to: "+filePath;
-    }
+public class ParameterSet {
+    private List<ParameterType> params;
 }

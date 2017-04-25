@@ -5,7 +5,7 @@
  */
 package de.zray.coretex.exceptions;
 
-import de.zray.coretex.AbstractCommand;
+import de.zray.coretex.command.AbstractCommand;
 
 /**
  *

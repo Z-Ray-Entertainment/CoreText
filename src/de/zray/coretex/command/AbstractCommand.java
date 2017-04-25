@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex;
+package de.zray.coretex.command;
 
+import de.zray.coretex.Console;
 import de.zray.coretex.exceptions.AliasException;
 import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.ParameterAmountException;
@@ -58,15 +59,7 @@ public abstract class AbstractCommand {
         
         return false;
     }
-    
-    public void setConsole(Console console){
-        this.console = console;
-    }
-    
-    public Console getConsole(){
-        return this.console;
-    }
-    
+
     public void addParameterSet(ParameterSet set){
         if(parameterSets == null){
             parameterSets = new LinkedList<>();
@@ -134,6 +127,14 @@ public abstract class AbstractCommand {
     
     public String execute(List<Parameter> params){
             return action(params);
+    }
+    
+    public Console getConsole(){
+        return console;
+    }
+    
+    public void setConsole(Console console){
+        this.console = console;
     }
     
     public abstract String action(List<Parameter> params);

@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex.commands.algebra;
+package de.zray.coretex.defaults.commands.algebra;
 
-import de.zray.coretex.AbstractCommand;
-import de.zray.coretex.Parameter;
-import de.zray.coretex.ParameterSet;
+import de.zray.coretex.command.AbstractCommand;
+import de.zray.coretex.command.Parameter;
+import de.zray.coretex.command.ParameterSet;
 import java.util.LinkedList;
 import java.util.List;
 
