@@ -1,0 +1,53 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package de.zray.coretex.command;
+
+import de.zray.coretex.script.ScriptElement;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ *
+ * @author Vortex Acherontic
+ */
+public class ParameterSetDefinition {
+    private List<ParameterType> validParameters;
+    
+    public void addParameterType(ParameterType type){
+        if(validParameters == null){
+            validParameters = new LinkedList<>();
+        }
+        validParameters.add(type);
+    }
+    
+    public boolean match(List<ScriptElement> elements){
+        for(ScriptElement tmp : elements){
+            switch(tmp.getElementType()){
+                case CLIP_CLOSE :
+                case CLIP_OPEN :
+                case CLOSE_STATE :
+                    return false;
+                case CODE_END :
+                    break;
+                case CODE_START :
+                    break;
+                case COMMAD_END :
+                    break;
+                case COMMAND :
+                    return false;
+                case OPEN_STATE :
+                    break;
+                case PARAMETER :
+                    break;
+                case STRING_CHARACTER :
+                    break;
+                case UNDEFINED :
+                    break;
+            }
+        }
+        return false;
+    }
+}

@@ -52,7 +52,7 @@ public class Parser {
                     elements.add(new ScriptElement(ScriptElement.Type.CLIP_CLOSE, curChar));
                     break;
                 case "\"" :
-                    elements.add(new ScriptElement(ScriptElement.Type.STRING, curChar));
+                    elements.add(new ScriptElement(ScriptElement.Type.STRING_CHARACTER, curChar));
                     break;
                 case "[" :
                     elements.add(new ScriptElement(ScriptElement.Type.CODE_START, curChar));

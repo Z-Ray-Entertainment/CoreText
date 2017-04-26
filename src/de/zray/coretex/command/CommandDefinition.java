@@ -5,6 +5,8 @@
  */
 package de.zray.coretex.command;
 
+import de.zray.coretex.script.ScriptElement;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,7 +14,26 @@ import java.util.List;
  * @author Vortex Acherontic
  */
 public class CommandDefinition {
-    List<ParameterSet> sets;
+    private String commandName;
+    List<ParameterSetDefinition> sets;
     
-    public
+    public CommandDefinition(String commandName){
+        this.commandName = commandName;
+    }
+    
+    public void addParameterSetDefinition(ParameterSetDefinition set){
+        if(sets == null){
+            sets = new LinkedList<>();
+        }
+        this.sets.add(set);
+    }
+    
+    public boolean match(List<ScriptElement> elements){
+        ScriptElement command = elements.get(0);
+        
+        if(command.getElementType() == ScriptElement.Type.COMMAND && command.getContent().equals(commandName)){
+            
+        }
+        return false;
+    }
 }

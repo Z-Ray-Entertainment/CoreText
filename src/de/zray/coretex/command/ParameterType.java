@@ -19,9 +19,30 @@ public class ParameterType {
     }
     
     public boolean suitsType(String parameterValue){
-        switch(type){
-            case BOOLEAN :
-                break;
+        try{
+            switch(type){
+                case BOOLEAN :
+                    return Boolean.parseBoolean(parameterValue);
+                case DOUBLE :
+                    Double.parseDouble(parameterValue);
+                    return true;
+                case FLOAT :
+                    Float.parseFloat(parameterValue);
+                    return true;
+                case INTEGER :
+                    Integer.parseInt(parameterValue);
+                    return true;
+                case STRING :
+                case CODEBLOCK :
+                case EMPTY :
+                case INFINITE :
+                case UNDEFINED :
+                    return true;
+
+            }
+        }
+        catch(NumberFormatException e){
+            return false;
         }
         return false;
     }

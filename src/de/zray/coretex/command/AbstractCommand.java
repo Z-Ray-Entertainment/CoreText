@@ -18,7 +18,7 @@ import java.util.List;
  */
 public abstract class AbstractCommand {
     private String cmd = "DEFAULT", customHelp, description = "No description.";
-    private List<ParameterSet> parameterSets;
+    private List<ParameterSetDefinition> parameterSets;
     private List<String> aliases;
     private Console console;
     
@@ -26,7 +26,7 @@ public abstract class AbstractCommand {
         this.cmd = cmd;
         if(params != null){
             this.parameterSets = new LinkedList<>();
-            ParameterSet parameterSet = new ParameterSet();
+            ParameterSetDefinition parameterSet = new ParameterSetDefinition();
             parameterSet.setParameters(params);
             this.parameterSets.add(parameterSet);
         }
@@ -60,7 +60,7 @@ public abstract class AbstractCommand {
         return false;
     }
 
-    public void addParameterSet(ParameterSet set){
+    public void addParameterSet(ParameterSetDefinition set){
         if(parameterSets == null){
             parameterSets = new LinkedList<>();
         }
@@ -68,7 +68,7 @@ public abstract class AbstractCommand {
     }
     
     public void addParameters(List<Parameter> params){
-        ParameterSet set = new ParameterSet();
+        ParameterSetDefinition set = new ParameterSetDefinition();
         set.setParameters(params);
         if(this.parameterSets == null){
             this.parameterSets = new LinkedList<>();
@@ -84,7 +84,7 @@ public abstract class AbstractCommand {
         if(customHelp == null){
             String output = getRootCMD();
             if(parameterSets != null){
-                for(ParameterSet tmp : parameterSets){
+                for(ParameterSetDefinition tmp : parameterSets){
                     output += tmp.getParameterTypes()+"\n... ";
                     return output.substring(0, output.length()-5);
                 }
@@ -101,7 +101,7 @@ public abstract class AbstractCommand {
             return false;
         }
         else{
-            for(ParameterSet set : parameterSets){
+            for(ParameterSetDefinition set : parameterSets){
                for(Parameter tmp : set.getEmptyParameters()){
                     if(tmp.getType() == Parameter.Type.EMPTY){
                         return false;
@@ -113,7 +113,7 @@ public abstract class AbstractCommand {
     }
     
     public List<Parameter> buildParameters(List<String> input) throws InvalidParameterValueException, ParameterAmountException{
-        for(ParameterSet tmp : parameterSets){
+        for(ParameterSetDefinition tmp : parameterSets){
             try{
                 List<Parameter> buildedParams = tmp.buildParameters(input);
                 return buildedParams;
