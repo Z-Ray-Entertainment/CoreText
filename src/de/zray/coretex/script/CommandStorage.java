@@ -5,12 +5,13 @@
  */
 package de.zray.coretex.script;
 
-import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.Console;
+import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.defaults.commands.Alias;
 import de.zray.coretex.defaults.commands.Coretex;
 import de.zray.coretex.defaults.commands.Echo;
 import de.zray.coretex.defaults.commands.Help;
+import de.zray.coretex.defaults.commands.If;
 import de.zray.coretex.defaults.commands.Quit;
 import de.zray.coretex.defaults.commands.algebra.Add;
 import de.zray.coretex.defaults.commands.algebra.Div;
@@ -18,7 +19,6 @@ import de.zray.coretex.defaults.commands.algebra.Mod;
 import de.zray.coretex.defaults.commands.algebra.Mult;
 import de.zray.coretex.defaults.commands.algebra.Sub;
 import de.zray.coretex.defaults.commands.bool.Equals;
-import de.zray.coretex.defaults.commands.If;
 import de.zray.coretex.defaults.commands.bool.NotEqual;
 import de.zray.coretex.defaults.commands.file.FileSystem;
 import de.zray.coretex.defaults.commands.variables.ParseVarValue;
@@ -83,5 +83,9 @@ public class CommandStorage {
             }
         }
         return null;
+    }
+    
+    public List<AbstractCommand> getCommands(){
+        return cmds;
     }
 }

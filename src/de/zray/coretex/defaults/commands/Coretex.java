@@ -7,7 +7,6 @@ package de.zray.coretex.defaults.commands;
 
 import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.command.Parameter;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,18 +15,14 @@ import java.util.List;
  */
 public class Coretex extends AbstractCommand{
     public Coretex() {
-        super("coretex", null);
-        Parameter param1 = new Parameter(Parameter.Type.STRING);
-        List<Parameter> params = new LinkedList<>();
-        params.add(param1);
-        addParameters(params);
+        super(new CoretexDefinition());
     }
 
     @Override
     public String action(List<Parameter> params) {
         switch(params.get(0).getValue()){
             case "version" :
-                return "1.0";
+                return "1.1";
         }
         return "";
     }

@@ -8,10 +8,7 @@ package de.zray.coretex.defaults.commands;
 import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.command.Parameter;
 import de.zray.coretex.exceptions.AliasException;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -20,13 +17,7 @@ import java.util.logging.Logger;
 public class Alias extends AbstractCommand{
     
     public Alias() {
-        super("alias", null);
-        Parameter param1 = new Parameter(Parameter.Type.STRING);
-        Parameter param2 = new Parameter(Parameter.Type.STRING);
-        List<Parameter> params = new LinkedList<>();
-        params.add(param1);
-        params.add(param2);
-        addParameters(params);
+        super(new AliasDefinition());
     }
 
     @Override
@@ -34,7 +25,7 @@ public class Alias extends AbstractCommand{
         String cmd = params.get(0).getValue();
         String alias = params.get(1).getValue();
         if(!aliasExsit(alias)){
-            AbstractCommand tmp = getMatchingCommand(cmd);
+            AbstractCommand tmp = getConsole().getCommandStorage().findCommand(cmd);
             if(tmp != null){
                 try {
                     tmp.addAlias(alias);
@@ -48,16 +39,12 @@ public class Alias extends AbstractCommand{
         return "Alias already exist";
     }
     
-    private AbstractCommand getMatchingCommand(String cmd){
-        for(AbstractCommand tmp : getConsole().getCommands()){
-            if(tmp.getRootCMD().equals(cmd)){
-                return tmp;
+    private boolean aliasExsit(String alias){
+        for(AbstractCommand cmd : getConsole().getCommandStorage().getCommands()){
+            if(cmd.matchesName(alias)){
+                return true;
             }
         }
-        return null;
-    }
-    
-    private boolean aliasExsit(String alias){
-        return getConsole().getCommands().stream().anyMatch((tmp) -> (tmp.hasAlias(alias)));
+        return false;
     }
 }
