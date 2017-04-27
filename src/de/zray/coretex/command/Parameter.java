@@ -5,6 +5,7 @@
  */
 package de.zray.coretex.command;
 
+import de.zray.coretex.command.ParameterType.Type;
 import de.zray.coretex.exceptions.InvalidParameterValueException;
 
 /**
@@ -12,7 +13,6 @@ import de.zray.coretex.exceptions.InvalidParameterValueException;
  * @author Vortex Acherontic
  */
 public class Parameter {
-    public enum Type{STRING, INTEGER, FLOAT, DOUBLE, UNDEFINED, EMPTY, INFINITE, BOOLEAN, CODEBLOCK}
     private Type type = Type.UNDEFINED;
     private String value;
     

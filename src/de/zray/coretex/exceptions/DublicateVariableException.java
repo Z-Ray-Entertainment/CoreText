@@ -9,10 +9,8 @@ package de.zray.coretex.exceptions;
  *
  * @author Vortex Acherontic
  */
-public class ParameterAmountException extends Exception{
-
-    public ParameterAmountException(int amountNeeded, int amountGiven) {
-            super("Invalid amount of parameters, "+amountNeeded+" needed and "+amountGiven+" given. ");
+public class DublicateVariableException extends Exception{
+    public DublicateVariableException(String variable){
+        super(variable+" already exist");
     }
-    
 }

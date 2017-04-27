@@ -26,6 +26,10 @@ public abstract class AbstractCommand {
         this.definition = definition;
     }
     
+    public String getCMDName(){
+        return definition.getCMDName();
+    }
+    
     public void addAlias(String alias) throws AliasException {
         if(alias == null){
             aliases = new LinkedList<>();
@@ -44,13 +48,19 @@ public abstract class AbstractCommand {
         }
     }
     
+    public boolean matchesName(String name){
+        if(definition.getCMDName().equals(name)){
+            return true;
+        }
+        return hasAlias(name);
+    }
+    
     public boolean hasAlias(String alias){
-        if(!cmd.equals(alias)){
+        if(!definition.getCMDName().equals(alias)){
             if(aliases != null){
                 return this.aliases.stream().anyMatch((tmp) -> (tmp.equals(alias)));
             }
         }
-        
         return false;
     }
 
@@ -63,7 +73,10 @@ public abstract class AbstractCommand {
     }
     
     public List<Parameter> buildParameters(List<ScriptElement> elements) throws InvalidParameterValueException, ParameterAmountException{
-        if(elements.size() != ){}
+        if(definition.hasAmount(elements.size())){
+            throw new ParameterAmountException(definition.getLowesAmount(), elements.size());
+        }
+        return definition.buildParameters(elements);
     }
     
     public String execute(List<Parameter> params){

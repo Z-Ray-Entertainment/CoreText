@@ -5,6 +5,8 @@
  */
 package de.zray.coretex.command;
 
+import de.zray.coretex.exceptions.InvalidParameterValueException;
+import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.script.ScriptElement;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,23 +15,24 @@ import java.util.List;
  *
  * @author Vortex Acherontic
  */
-public class CommandDefinition {
+public abstract class CommandDefinition {
     private String commandName, description;
     List<ParameterSetDefinition> sets;
+    private ParameterSetDefinition mayBeUsedSoon;
     
     public CommandDefinition(String commandName, String description){
         this.commandName = commandName;
         this.description = description;
     }
     
-    public void addParameterSetDefinition(ParameterSetDefinition set){
+    public final void addParameterSetDefinition(ParameterSetDefinition set){
         if(sets == null){
             sets = new LinkedList<>();
         }
         this.sets.add(set);
     }
     
-    public boolean match(List<ScriptElement> elements){
+    public final boolean match(List<ScriptElement> elements){
         ScriptElement command = elements.get(0);
         
         if(command.getElementType() == ScriptElement.Type.COMMAND && command.getContent().equals(commandName)){
@@ -38,7 +41,11 @@ public class CommandDefinition {
         return false;
     }
     
-    public String getHelp(){
+    public final String getCMDName(){
+        return commandName;
+    }
+    
+    public final String getHelp(){
         String output = commandName+" ";
         for(ParameterSetDefinition set : sets){
             output += set.getHelp()+"\n";
@@ -46,7 +53,7 @@ public class CommandDefinition {
         return output;
     }
     
-    public boolean requireParameter(){
+    public final boolean requireParameter(){
         if(sets == null){
             return false;
         }
@@ -58,5 +65,40 @@ public class CommandDefinition {
             }
         }
         return true;
+    }
+    
+    public final int getLowesAmount(){
+        int lowes = sets.get(0).getAmount();
+        for(ParameterSetDefinition set : sets){
+            if(lowes > set.getAmount()){
+                lowes = set.getAmount();
+            }
+        }
+        return lowes;
+    }
+    
+    public final boolean hasAmount(int amount){
+        for(ParameterSetDefinition set : sets){
+            if(set.getAmount() == amount){
+                mayBeUsedSoon = set;
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public final List<Parameter> buildParameters(List<ScriptElement> elements) throws ParameterAmountException, InvalidParameterValueException{
+        if(mayBeUsedSoon != null && mayBeUsedSoon.getAmount() == elements.size()){
+            System.out.println("Use prefound ParameterSetDefinition!");
+            return mayBeUsedSoon.buildParametes(elements);
+        }
+        else{
+            for(ParameterSetDefinition set : sets){
+                if(set.getAmount() == elements.size()){
+                    return set.buildParametes(elements);
+                }
+            }
+        }
+        return null;
     }
 }

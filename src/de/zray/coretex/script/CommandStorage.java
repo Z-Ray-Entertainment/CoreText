@@ -65,7 +65,7 @@ public class CommandStorage {
     
      public void addCommand(AbstractCommand cmd) throws DublicateCommandException{
         for(AbstractCommand tmp : cmds){
-            if(tmp.getRootCMD().equals(cmd.getRootCMD())){
+            if(tmp.matchesName(cmd.getCMDName())){
                 throw new  DublicateCommandException(cmd);
             }
         }
@@ -75,7 +75,10 @@ public class CommandStorage {
      
     public AbstractCommand findCommand(String cmdName){
         for(AbstractCommand cmd : cmds){
-            if(cmd.getRootCMD().equals(cmdName)){
+            if(cmd.getCMDName().equals(cmdName)){
+                return cmd;
+            }
+            if(cmd.hasAlias(cmdName)){
                 return cmd;
             }
         }

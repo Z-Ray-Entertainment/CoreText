@@ -9,7 +9,6 @@ import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.exceptions.InvalidVarTypeException;
 import de.zray.coretex.command.Parameter;
 import de.zray.coretex.exceptions.UnknownVariableException;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,13 +18,7 @@ import java.util.List;
 public class SetVariable extends AbstractCommand{
 
     public SetVariable() {
-        super("=", null);
-        Parameter var = new Parameter(Parameter.Type.STRING);
-        Parameter value = new Parameter(Parameter.Type.STRING);
-        List<Parameter> params = new LinkedList<>();
-        params.add(var);
-        params.add(value);
-        addParameters(params);
+        super(new SetVariableDefinition());
     }
 
     @Override

@@ -7,7 +7,9 @@ package de.zray.coretex.script;
 
 import de.zray.coretex.Console;
 import de.zray.coretex.command.AbstractCommand;
+import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
+import de.zray.coretex.exceptions.ParameterAmountException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class Executor {
         this.console = console;
     }
     
-    public String execute(List<ScriptElement> elememts) throws InvalidTypeException{
+    public String execute(List<ScriptElement> elememts) throws InvalidTypeException, InvalidParameterValueException, ParameterAmountException{
         List<ScriptElement> cmd = null;
         
         for(ScriptElement tmp : elememts){
@@ -45,7 +47,8 @@ public class Executor {
                     }
                     cmdName = cmd.get(0).getContent();
                     AbstractCommand tmpCMD = console.getCommandStorage().findCommand(cmdName);
-                    tmpCMD.
+                    List<ScriptElement> parameters = cmd.subList(1, cmd.lastIndexOf(cmd)-1);
+                    tmpCMD.execute(tmpCMD.buildParameters(parameters));
                     break;
             }
         }
