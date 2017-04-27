@@ -50,4 +50,24 @@ public class ParameterSetDefinition {
         }
         return false;
     }
+    
+    public String getHelp(){
+        String output = "";
+        for(ParameterType type : validParameters){
+            output += type.toString()+" ";
+        }
+        return output.substring(0, output.length()-1);
+    }
+    
+    public boolean requireParameters(){
+        if(validParameters == null){
+            return false;
+        }
+        else if(validParameters.get(0).getType() == ParameterType.Type.EMPTY){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
 }

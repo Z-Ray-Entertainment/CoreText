@@ -13,4 +13,8 @@ public class InvalidTypeException extends Exception{
     public InvalidTypeException() {
         super("UNDEFINED is an unvalid type.\nYou must set it to STRING, FLOAT, DOUBLE or INTEGER.");
     }
+    
+    public InvalidTypeException(String msg) {
+        super(msg);
+    }
 }

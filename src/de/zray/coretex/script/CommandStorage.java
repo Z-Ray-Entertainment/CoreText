@@ -39,6 +39,9 @@ public class CommandStorage {
     public CommandStorage(Console console, boolean defaultCMDs) throws DublicateCommandException{
         this.console = console;
         addCommand(new Coretex());
+        if(defaultCMDs){
+            initDefaultCMDs();
+        }
     }
     
     private void initDefaultCMDs() throws DublicateCommandException{
@@ -68,5 +71,14 @@ public class CommandStorage {
         }
         cmd.setConsole(console);
         cmds.add(cmd);
+    }
+     
+    public AbstractCommand findCommand(String cmdName){
+        for(AbstractCommand cmd : cmds){
+            if(cmd.getRootCMD().equals(cmdName)){
+                return cmd;
+            }
+        }
+        return null;
     }
 }

@@ -9,6 +9,7 @@ import de.zray.coretex.Console;
 import de.zray.coretex.exceptions.AliasException;
 import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.ParameterAmountException;
+import de.zray.coretex.script.ScriptElement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,19 +18,12 @@ import java.util.List;
  * @author Vortex Acherontic
  */
 public abstract class AbstractCommand {
-    private String cmd = "DEFAULT", customHelp, description = "No description.";
-    private List<ParameterSetDefinition> parameterSets;
+    private CommandDefinition definition;
     private List<String> aliases;
     private Console console;
     
-    public AbstractCommand(String cmd, List<Parameter> params){
-        this.cmd = cmd;
-        if(params != null){
-            this.parameterSets = new LinkedList<>();
-            ParameterSetDefinition parameterSet = new ParameterSetDefinition();
-            parameterSet.setParameters(params);
-            this.parameterSets.add(parameterSet);
-        }
+    public AbstractCommand(CommandDefinition definition){
+        this.definition = definition;
     }
     
     public void addAlias(String alias) throws AliasException {
@@ -60,69 +54,16 @@ public abstract class AbstractCommand {
         return false;
     }
 
-    public void addParameterSet(ParameterSetDefinition set){
-        if(parameterSets == null){
-            parameterSets = new LinkedList<>();
-        }
-        this.parameterSets.add(set);
-    }
-    
-    public void addParameters(List<Parameter> params){
-        ParameterSetDefinition set = new ParameterSetDefinition();
-        set.setParameters(params);
-        if(this.parameterSets == null){
-            this.parameterSets = new LinkedList<>();
-        }
-        this.parameterSets.add(set);
-    }
-    
-    public String getRootCMD(){
-        return cmd;
-    }
-
     public String getHelp(){
-        if(customHelp == null){
-            String output = getRootCMD();
-            if(parameterSets != null){
-                for(ParameterSetDefinition tmp : parameterSets){
-                    output += tmp.getParameterTypes()+"\n... ";
-                    return output.substring(0, output.length()-5);
-                }
-            }
-            return output;
-        }
-        else{
-            return customHelp;
-        }
+        return definition.getHelp();
     }
     
     public boolean requireParameters(){
-        if(parameterSets == null){
-            return false;
-        }
-        else{
-            for(ParameterSetDefinition set : parameterSets){
-               for(Parameter tmp : set.getEmptyParameters()){
-                    if(tmp.getType() == Parameter.Type.EMPTY){
-                        return false;
-                    }
-                } 
-            }
-        }
-        return true;
+        return definition.requireParameter();
     }
     
-    public List<Parameter> buildParameters(List<String> input) throws InvalidParameterValueException, ParameterAmountException{
-        for(ParameterSetDefinition tmp : parameterSets){
-            try{
-                List<Parameter> buildedParams = tmp.buildParameters(input);
-                return buildedParams;
-            }
-            catch(InvalidParameterValueException e){
-                //Try next Set
-            }
-        }
-        throw new InvalidParameterValueException("The given Input dose not match any of the given ParameterSets.");
+    public List<Parameter> buildParameters(List<ScriptElement> elements) throws InvalidParameterValueException, ParameterAmountException{
+        if(elements.size() != ){}
     }
     
     public String execute(List<Parameter> params){

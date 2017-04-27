@@ -32,12 +32,16 @@ public class Console {
         varStore = new VariableStore();
         parser = new Parser();
         validator = new Validator(true);
-        executor = new Executor();
+        executor = new Executor(this);
         cmdSotrage = new CommandStorage(this, true);
     }
         
     public String executeScript(String input) throws SyntaxException, ParameterAmountException, InvalidTypeException, InvalidParameterValueException{
         validator.checkSyntax(input);
         return executor.execute(parser.parseScript(input));
+    }
+    
+    public CommandStorage getCommandStorage(){
+        return cmdSotrage;
     }
 }

@@ -46,4 +46,8 @@ public class ParameterType {
         }
         return false;
     }
+    
+    public Type getType(){
+        return type;
+    }
 }
