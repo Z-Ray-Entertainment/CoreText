@@ -8,7 +8,6 @@ package de.zray.coretex.defaults.commands.variables;
 import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.command.Parameter;
 import de.zray.coretex.exceptions.UnknownVariableException;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,11 +17,7 @@ import java.util.List;
 public class ParseVarValue extends AbstractCommand{
 
     public ParseVarValue() {
-        super("$", null);
-        Parameter var = new Parameter(Parameter.Type.STRING);
-        List<Parameter> params = new LinkedList<>();
-        params.add(var);
-        addParameters(params);
+        super(new ParseVarValueDefinition());
     }
 
     @Override

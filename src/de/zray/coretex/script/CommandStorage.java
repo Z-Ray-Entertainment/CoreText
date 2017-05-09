@@ -5,12 +5,13 @@
  */
 package de.zray.coretex.script;
 
-import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.Console;
+import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.defaults.commands.Alias;
 import de.zray.coretex.defaults.commands.Coretex;
 import de.zray.coretex.defaults.commands.Echo;
 import de.zray.coretex.defaults.commands.Help;
+import de.zray.coretex.defaults.commands.If;
 import de.zray.coretex.defaults.commands.Quit;
 import de.zray.coretex.defaults.commands.algebra.Add;
 import de.zray.coretex.defaults.commands.algebra.Div;
@@ -18,7 +19,6 @@ import de.zray.coretex.defaults.commands.algebra.Mod;
 import de.zray.coretex.defaults.commands.algebra.Mult;
 import de.zray.coretex.defaults.commands.algebra.Sub;
 import de.zray.coretex.defaults.commands.bool.Equals;
-import de.zray.coretex.defaults.commands.If;
 import de.zray.coretex.defaults.commands.bool.NotEqual;
 import de.zray.coretex.defaults.commands.file.FileSystem;
 import de.zray.coretex.defaults.commands.variables.ParseVarValue;
@@ -65,7 +65,7 @@ public class CommandStorage {
     
      public void addCommand(AbstractCommand cmd) throws DublicateCommandException{
         for(AbstractCommand tmp : cmds){
-            if(tmp.getRootCMD().equals(cmd.getRootCMD())){
+            if(tmp.matchesName(cmd.getCMDName())){
                 throw new  DublicateCommandException(cmd);
             }
         }
@@ -75,10 +75,17 @@ public class CommandStorage {
      
     public AbstractCommand findCommand(String cmdName){
         for(AbstractCommand cmd : cmds){
-            if(cmd.getRootCMD().equals(cmdName)){
+            if(cmd.getCMDName().equals(cmdName)){
+                return cmd;
+            }
+            if(cmd.hasAlias(cmdName)){
                 return cmd;
             }
         }
         return null;
+    }
+    
+    public List<AbstractCommand> getCommands(){
+        return cmds;
     }
 }

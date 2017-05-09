@@ -9,6 +9,7 @@ import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.exceptions.InvalidVarTypeException;
 import de.zray.coretex.command.Parameter;
 import de.zray.coretex.Variable;
+import de.zray.coretex.command.CommandDefinition;
 import de.zray.coretex.exceptions.UnknownVariableException;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,15 +23,7 @@ import java.util.logging.Logger;
 public class Var extends AbstractCommand{
 
     public Var() {
-        super("var", null);
-        Parameter type = new Parameter(Parameter.Type.STRING);
-        Parameter name = new Parameter(Parameter.Type.STRING);
-        Parameter value = new Parameter(Parameter.Type.STRING);
-        List<Parameter> params = new LinkedList<>();
-        params.add(type);
-        params.add(name);
-        params.add(value);
-        addParameters(params);
+        super(new VarDefinition());
     }
 
     @Override

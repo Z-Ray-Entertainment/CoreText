@@ -7,10 +7,12 @@ package de.zray.coretex;
 
 import de.zray.coretex.exceptions.DublicateCommandException;
 import de.zray.coretex.exceptions.DublicateSyntaxRuleException;
+import de.zray.coretex.exceptions.DublicateVariableException;
 import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.exceptions.SyntaxException;
+import de.zray.coretex.exceptions.UnknownVariableException;
 import de.zray.coretex.script.CommandStorage;
 import de.zray.coretex.script.Executor;
 import de.zray.coretex.script.Parser;
@@ -43,5 +45,13 @@ public class Console {
     
     public CommandStorage getCommandStorage(){
         return cmdSotrage;
+    }
+    
+    public Variable getVariable(String varName) throws UnknownVariableException {
+        return varStore.getVariable(varName);
+    }
+    
+    public void createVar(Variable var) throws DublicateVariableException {
+        varStore.createVariable(var);
     }
 }

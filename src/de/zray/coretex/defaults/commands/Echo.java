@@ -7,7 +7,6 @@ package de.zray.coretex.defaults.commands;
 
 import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.command.Parameter;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,11 +15,7 @@ import java.util.List;
  */
 public class Echo extends AbstractCommand{
     public Echo() {
-        super("echo", null);
-        List<Parameter> params = new LinkedList<>();
-        Parameter val1 = new Parameter(Parameter.Type.STRING);
-        params.add(val1);
-        this.addParameters(params);
+        super(new EchoDefinition());
     }
 
     @Override

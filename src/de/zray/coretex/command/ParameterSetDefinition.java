@@ -5,6 +5,8 @@
  */
 package de.zray.coretex.command;
 
+import de.zray.coretex.exceptions.InvalidParameterValueException;
+import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.script.ScriptElement;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,5 +71,24 @@ public class ParameterSetDefinition {
         else{
             return true;
         }
+    }
+    
+    public int getAmount(){
+        return validParameters.size();
+    }
+    
+    public List<Parameter> buildParametes(List<ScriptElement> elements) throws ParameterAmountException, InvalidParameterValueException{
+        if(getAmount() != elements.size()){
+            throw new ParameterAmountException(getAmount(), elements.size());
+        }
+        List<Parameter> params = new LinkedList<>();
+        for(int i = 0; i < elements.size(); i++){
+            String content = elements.get(i).getContent();
+            ParameterType.Type paramType = validParameters.get(i).getType();
+            Parameter param = new Parameter(paramType);
+            param.setValue(content);
+            params.add(param);
+        }
+        return params;
     }
 }
