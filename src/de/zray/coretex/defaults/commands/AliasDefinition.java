@@ -20,6 +20,7 @@ public class AliasDefinition extends CommandDefinition{
         ParameterSetDefinition set = new ParameterSetDefinition();
         set.addParameterType(new ParameterType(ParameterType.Type.STRING));
         set.addParameterType(new ParameterType(ParameterType.Type.STRING));
+        addParameterSetDefinition(set);
     }
     
 }

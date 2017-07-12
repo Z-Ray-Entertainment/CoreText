@@ -7,7 +7,6 @@ package de.zray.coretex.defaults.commands;
 
 import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.command.Parameter;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,16 +15,7 @@ import java.util.List;
  */
 public class Help extends AbstractCommand{
     public Help() {
-        super("help", null);
-        List<Parameter> params = new LinkedList<>();
-        Parameter command = new Parameter(Parameter.Type.STRING);
-        params.add(command);
-        addParameters(params);
-        
-        List<Parameter> params2 = new LinkedList<>();
-        Parameter empty = new Parameter(Parameter.Type.EMPTY);
-        params2.add(empty);
-        addParameters(params2);
+        super(new HelpDefinition());
     }
 
     @Override
@@ -41,8 +31,8 @@ public class Help extends AbstractCommand{
                 return getHelpOfAll();
             default:
                 System.out.println(getConsole());
-                for(AbstractCommand cmd : getConsole().getCommands()){
-                    if(cmd.getRootCMD().equals(params.get(0).getValue())){
+                for(AbstractCommand cmd : getConsole().getCommandStorage().getCommands()){
+                    if(cmd.getCMDName().equals(params.get(0).getValue())){
                         return output += cmd.getHelp()+"\n";
                     }
                 }
@@ -52,7 +42,7 @@ public class Help extends AbstractCommand{
     
     private String getHelpOfAll(){
         String output = "";
-        for(AbstractCommand cmd : getConsole().getCommands()){
+        for(AbstractCommand cmd : getConsole().getCommandStorage().getCommands()){
             output += cmd.getHelp()+"\n";
         }
         if(output.isEmpty()){
