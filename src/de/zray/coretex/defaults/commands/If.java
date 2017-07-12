@@ -11,7 +11,6 @@ import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.exceptions.SyntaxException;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,15 +20,15 @@ import java.util.List;
 public class If extends AbstractCommand{
 
     public If() {
-        super("if", null);
-        Parameter param1 = new Parameter(Parameter.Type.BOOLEAN);
+        super(null);
+        /*Parameter param1 = new Parameter(Parameter.Type.BOOLEAN);
         Parameter param2 = new Parameter(Parameter.Type.CODEBLOCK);
         Parameter param3 = new Parameter(Parameter.Type.CODEBLOCK);
         List<Parameter> params = new LinkedList<>();
         params.add(param1);
         params.add(param2);
         params.add(param3);
-        addParameters(params);
+        addParameters(params);*/
     }
 
     @Override
