@@ -31,7 +31,7 @@ public abstract class AbstractCommand {
     }
     
     public void addAlias(String alias) throws AliasException {
-        if(alias == null){
+        if(aliases == null){
             aliases = new LinkedList<>();
             aliases.add(alias);
         }
@@ -91,5 +91,5 @@ public abstract class AbstractCommand {
         this.console = console;
     }
     
-    public abstract String action(List<Parameter> params);
+    public abstract String action(List<Parameter> params) ;
 }
