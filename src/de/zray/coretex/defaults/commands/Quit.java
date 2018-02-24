@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Quit extends AbstractCommand{
     public Quit() {
-        super("quit", null);
+        super(new QuitDefinition());
     }
 
     @Override
