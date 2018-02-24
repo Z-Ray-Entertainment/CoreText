@@ -9,12 +9,8 @@ import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.exceptions.InvalidVarTypeException;
 import de.zray.coretex.command.Parameter;
 import de.zray.coretex.Variable;
-import de.zray.coretex.command.CommandDefinition;
-import de.zray.coretex.exceptions.UnknownVariableException;
-import java.util.LinkedList;
+import de.zray.coretex.exceptions.DublicateVariableException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -59,7 +55,7 @@ public class Var extends AbstractCommand{
                     return "Unknown type "+params.get(0).getValue();
             }
         }
-        catch(InvalidVarTypeException e){
+        catch(InvalidVarTypeException | DublicateVariableException e){
             return value+" dose not matches type "+type+" for "+name;
         }
         return value;
