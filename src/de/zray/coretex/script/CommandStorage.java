@@ -60,7 +60,7 @@ public class CommandStorage {
         addCommand(new Equals());
         addCommand(new NotEqual());
         addCommand(new Alias());
-        addCommand(new If());
+        //addCommand(new If());
         addCommand(new FileSystem());
     }
     
