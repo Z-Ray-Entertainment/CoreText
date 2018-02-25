@@ -15,7 +15,7 @@ import java.util.List;
 public class Parser {
     public List<ScriptElement> parseScript(String script){
         List<ScriptElement> elements = new LinkedList<>();
-        int start = -1;
+        int start = 0;
         boolean closeState = false, state = false, command = false;
         
         for(int i = 0; i < script.length(); i++){
