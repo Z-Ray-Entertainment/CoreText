@@ -30,7 +30,7 @@ public class Console {
     private final Executor executor;
     private final CommandStorage cmdSotrage;
     
-     public Console() throws DublicateCommandException, DublicateSyntaxRuleException{
+    public Console() throws DublicateCommandException, DublicateSyntaxRuleException{
         varStore = new VariableStore();
         parser = new Parser();
         validator = new Validator(true);
