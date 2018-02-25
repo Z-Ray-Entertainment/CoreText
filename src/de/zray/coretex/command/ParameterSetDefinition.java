@@ -27,28 +27,57 @@ public class ParameterSetDefinition {
     
     public boolean match(List<ScriptElement> elements){
         for(ScriptElement tmp : elements){
-            switch(tmp.getElementType()){
-                case CLIP_CLOSE :
-                case CLIP_OPEN :
-                case CLOSE_STATE :
+            for(ParameterType type : validParameters){
+                if(!validateParameter(type, tmp)){
                     return false;
-                case CODE_END :
-                    break;
-                case CODE_START :
-                    break;
-                case COMMAD_END :
-                    break;
-                case COMMAND :
-                    return false;
-                case OPEN_STATE :
-                    break;
-                case PARAMETER :
-                    break;
-                case STRING_CHARACTER :
-                    break;
-                case UNDEFINED :
-                    break;
+                }
             }
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean validateParameter(ParameterType type, ScriptElement element){
+        switch(type.getType()){
+            case BOOLEAN :
+                try{
+                    Boolean.parseBoolean(element.getContent());
+                }
+                catch(Exception e){
+                    return false;
+                }
+                return true;
+            case DOUBLE :
+                try{
+                    Double.parseDouble(element.getContent());
+                }
+                catch(NumberFormatException e){
+                    return false;
+                }
+                return true;
+            
+            case FLOAT :
+                try{
+                    Float.parseFloat(element.getContent());
+                }
+                catch(NumberFormatException e){
+                    return false;
+                }
+                return true;
+            case INTEGER :
+                try{
+                    Integer.parseInt(element.getContent());
+                }
+                catch(NumberFormatException e){
+                    return false;
+                }
+                return true;
+            case STRING :
+            case INFINITE :
+            case UNDEFINED :
+            case EMPTY :
+            case CODEBLOCK :
+                return true;
         }
         return false;
     }

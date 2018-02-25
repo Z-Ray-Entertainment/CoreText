@@ -36,7 +36,11 @@ public abstract class CommandDefinition {
         ScriptElement command = elements.get(0);
         
         if(command.getElementType() == ScriptElement.Type.COMMAND && command.getContent().equals(commandName)){
-            
+            for(ParameterSetDefinition set : sets){
+                if(set.match(elements.subList(1, elements.size()))){
+                    return true;
+                }
+            }
         }
         return false;
     }
