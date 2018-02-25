@@ -7,6 +7,8 @@ package de.zray.coretex.defaults.commands.file;
 
 import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.command.Parameter;
+import java.io.File;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,21 +17,10 @@ import java.util.List;
  * @author Vortex Acherontic
  */
 public class FileSystem extends AbstractCommand{
+    private String currentDir = System.getProperty("user.home");
 
     public FileSystem() {
-        super("file", null);
-        Parameter param1 = new Parameter(Parameter.Type.STRING); //Action
-        Parameter param2 = new Parameter(Parameter.Type.STRING); //File
-        List<Parameter> set = new LinkedList<>();
-        set.add(param1);
-        set.add(param2);
-        addParameters(set);
-        Parameter param3 = new Parameter(Parameter.Type.STRING); //Content
-        List<Parameter> set2 = new LinkedList<>();
-        set2.add(param1);
-        set2.add(param2);
-        set2.add(param3);
-        addParameters(set2);
+        super(new FileSystemDefinition());
     }
 
     @Override
@@ -41,6 +32,17 @@ public class FileSystem extends AbstractCommand{
                 return new FileReader().readFile(fileName);
             case "write" :
                 return new FileWriter().writeFile(params.get(2).getValue(), fileName);
+            case "list" :
+                StringBuilder dirContent = new StringBuilder();
+                File curDir = new File(currentDir);
+                if(!curDir.isFile()){
+                    for(String curItem: curDir.list()){
+                        dirContent.append(curItem);
+                        dirContent.append("\n");
+                    }
+                }
+                
+                return dirContent.toString();
         }
         return "";
     }
