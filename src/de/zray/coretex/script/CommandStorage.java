@@ -14,16 +14,17 @@ import de.zray.coretex.defaults.commands.Help;
 import de.zray.coretex.defaults.commands.If;
 import de.zray.coretex.defaults.commands.Quit;
 import de.zray.coretex.defaults.commands.algebra.Add;
-import de.zray.coretex.defaults.commands.algebra.Div;
-import de.zray.coretex.defaults.commands.algebra.Mod;
-import de.zray.coretex.defaults.commands.algebra.Mult;
-import de.zray.coretex.defaults.commands.algebra.Sub;
+import de.zray.coretex.defaults.commands.algebra.Divide;
+import de.zray.coretex.defaults.commands.algebra.Modulo;
+import de.zray.coretex.defaults.commands.algebra.Multiplication;
+import de.zray.coretex.defaults.commands.algebra.Substract;
 import de.zray.coretex.defaults.commands.bool.Equals;
 import de.zray.coretex.defaults.commands.bool.NotEqual;
 import de.zray.coretex.defaults.commands.file.FileSystem;
 import de.zray.coretex.defaults.commands.variables.ParseVarValue;
 import de.zray.coretex.defaults.commands.variables.SetVariable;
 import de.zray.coretex.defaults.commands.variables.Var;
+import de.zray.coretex.exceptions.AliasException;
 import de.zray.coretex.exceptions.DublicateCommandException;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class CommandStorage {
     private List<AbstractCommand> cmds = new LinkedList<>();
     private Console console;
     
-    public CommandStorage(Console console, boolean defaultCMDs) throws DublicateCommandException{
+    public CommandStorage(Console console, boolean defaultCMDs) throws DublicateCommandException, AliasException{
         this.console = console;
         addCommand(new Coretex());
         if(defaultCMDs){
@@ -44,15 +45,15 @@ public class CommandStorage {
         }
     }
     
-    private void initDefaultCMDs() throws DublicateCommandException{
+    private void initDefaultCMDs() throws DublicateCommandException, AliasException{
         addCommand(new Quit());
         addCommand(new Echo());
         addCommand(new Help());
         addCommand(new Add());
-        addCommand(new Sub());
-        addCommand(new Mult());
-        addCommand(new Div());
-        addCommand(new Mod());
+        addCommand(new Substract());
+        addCommand(new Multiplication());
+        addCommand(new Divide());
+        addCommand(new Modulo());
         addCommand(new Var());
         addCommand(new ParseVarValue());
         addCommand(new SetVariable());
