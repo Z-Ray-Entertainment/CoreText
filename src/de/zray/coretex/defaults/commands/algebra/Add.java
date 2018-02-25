@@ -17,28 +17,7 @@ import java.util.List;
 public class Add extends AbstractCommand{
 
     public Add() {
-        super("add", null);
-        Parameter var1 = new Parameter(Parameter.Type.DOUBLE);
-        Parameter var2 = new Parameter(Parameter.Type.DOUBLE);
-        List<Parameter> paramList = new LinkedList<>();
-        paramList.add(var1);
-        paramList.add(var2);
-        
-        Parameter var1I = new Parameter(Parameter.Type.INTEGER);
-        Parameter var2I = new Parameter(Parameter.Type.INTEGER);
-        List<Parameter> paramList2 = new LinkedList<>();
-        paramList2.add(var1I);
-        paramList2.add(var2I);
-        
-        Parameter var1F = new Parameter(Parameter.Type.FLOAT);
-        Parameter var2F = new Parameter(Parameter.Type.FLOAT);
-        List<Parameter> paramList3 = new LinkedList<>();
-        paramList3.add(var1F);
-        paramList3.add(var2F);
-        
-        addParameters(paramList);
-        addParameters(paramList2);
-        addParameters(paramList3);
+        super(new AddDefinition());
     }
 
     @Override
