@@ -5,6 +5,7 @@
  */
 package de.zray.coretex;
 
+import de.zray.coretex.exceptions.AliasException;
 import de.zray.coretex.exceptions.DublicateCommandException;
 import de.zray.coretex.exceptions.DublicateSyntaxRuleException;
 import de.zray.coretex.exceptions.DublicateVariableException;
@@ -30,7 +31,7 @@ public class Console {
     private final Executor executor;
     private final CommandStorage cmdSotrage;
     
-    public Console() throws DublicateCommandException, DublicateSyntaxRuleException{
+    public Console() throws DublicateCommandException, DublicateSyntaxRuleException, AliasException{
         varStore = new VariableStore();
         parser = new Parser();
         validator = new Validator(true);

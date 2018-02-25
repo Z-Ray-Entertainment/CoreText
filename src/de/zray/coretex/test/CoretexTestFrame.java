@@ -6,6 +6,7 @@
 package de.zray.coretex.test;
 
 import de.zray.coretex.Console;
+import de.zray.coretex.exceptions.AliasException;
 import de.zray.coretex.exceptions.DublicateCommandException;
 import de.zray.coretex.exceptions.DublicateSyntaxRuleException;
 import de.zray.coretex.exceptions.InvalidParameterValueException;
@@ -13,8 +14,6 @@ import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.exceptions.SyntaxException;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -26,14 +25,14 @@ public class CoretexTestFrame extends javax.swing.JFrame{
     /**
      * Creates new form Console
      */
-    public CoretexTestFrame() throws DublicateSyntaxRuleException {
+    public CoretexTestFrame() {
         initComponents();
         setTitle("Coretex");
         
         try {
             seConsole = new Console();
         }
-        catch (DublicateCommandException ex) {
+        catch (DublicateCommandException | DublicateSyntaxRuleException | AliasException ex) {
             jTA_Log.append("[ERROR]: "+ex.getMessage()+"\n");
         }
     }
@@ -143,11 +142,7 @@ public class CoretexTestFrame extends javax.swing.JFrame{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new CoretexTestFrame().setVisible(true);
-                } catch (DublicateSyntaxRuleException ex) {
-                    System.err.println(ex.getMessage());
-                }
+                new CoretexTestFrame().setVisible(true);
             }
         });
     }
