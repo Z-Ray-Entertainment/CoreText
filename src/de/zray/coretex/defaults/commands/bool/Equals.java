@@ -7,7 +7,7 @@ package de.zray.coretex.defaults.commands.bool;
 
 import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.command.Parameter;
-import java.util.LinkedList;
+import de.zray.coretex.exceptions.AliasException;
 import java.util.List;
 
 /**
@@ -15,14 +15,9 @@ import java.util.List;
  * @author Vortex Acherontic
  */
 public class Equals extends AbstractCommand{
-    public Equals() {
-        super("==", null);
-        Parameter var1 = new Parameter(Parameter.Type.STRING);
-        Parameter var2 = new Parameter(Parameter.Type.STRING);
-        List<Parameter> paramList = new LinkedList<>();
-        paramList.add(var1);
-        paramList.add(var2);
-        addParameters(paramList);
+    public Equals() throws AliasException {
+        super(new EqualsDefinition());
+        addAlias("equals");
     }
 
     @Override
