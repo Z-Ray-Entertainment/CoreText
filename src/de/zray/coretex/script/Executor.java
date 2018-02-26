@@ -33,11 +33,13 @@ public class Executor {
                     if(cmd == null){
                         cmd = new LinkedList<>();
                         cmd.add(tmp);
+                        System.out.println("[Executor]: Found command: "+tmp.getContent());
                     }
                     break;
                 case PARAMETER :
                     if(cmd != null){
                         cmd.add(tmp);
+                        System.out.println("[Executor]: Found parameter: "+tmp.getContent());
                     }
                     break;
                 case COMMAD_END :
@@ -47,8 +49,13 @@ public class Executor {
                     }
                     cmdName = cmd.get(0).getContent();
                     AbstractCommand tmpCMD = console.getCommandStorage().findCommand(cmdName);
-                    List<ScriptElement> parameters = cmd.subList(1, cmd.lastIndexOf(cmd)-1);
-                    tmpCMD.execute(tmpCMD.buildParameters(parameters));
+                    if(!(cmd.size() <= 1)){
+                        List<ScriptElement> parameters = cmd.subList(1, cmd.size()-1);
+                        tmpCMD.execute(tmpCMD.buildParameters(parameters));
+                    }
+                    else {
+                        tmpCMD.execute(null);
+                    }
                     break;
             }
         }
