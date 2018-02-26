@@ -77,11 +77,9 @@ public class CommandStorage {
     public AbstractCommand findCommand(String cmdName){
         for(AbstractCommand cmd : cmds){
             if(cmd.getCMDName().equals(cmdName)){
-                System.out.println("[CMDStorage]: found command: "+cmd.getCMDName());
                 return cmd;
             }
             if(cmd.hasAlias(cmdName)){
-                System.out.println("[CMDStorage]: found command via alias: "+cmd.getCMDName());
                 return cmd;
             }
         }

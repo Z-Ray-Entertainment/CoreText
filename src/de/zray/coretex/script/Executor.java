@@ -35,13 +35,11 @@ public class Executor {
                     if(cmd == null){
                         cmd = new LinkedList<>();
                         cmd.add(tmp);
-                        System.out.println("[Executor]: Found command: "+tmp.getContent());
                     }
                     break;
                 case PARAMETER :
                     if(cmd != null){
                         cmd.add(tmp);
-                        System.out.println("[Executor]: Found parameter: "+tmp.getContent());
                     }
                     break;
                 case COMMAD_END :

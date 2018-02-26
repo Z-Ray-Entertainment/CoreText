@@ -33,14 +33,12 @@ public class Parser {
                         String content = script.substring(start, i+1);
                         if(!closeState){
                             elements.add(new ScriptElement(ScriptElement.Type.OPEN_STATE, content));
-                            System.out.println("[Parser]: Found opening state: "+content);
                             command = true;
                         }
                         else{
                             elements.add(new ScriptElement(ScriptElement.Type.CLOSE_STATE, content));
                             closeState = false;
                             command = true;
-                            System.out.println("[Parser]: Found closing state: "+content);
                         }
                         start = -1;
                     }
@@ -97,13 +95,11 @@ public class Parser {
     
     private ScriptElement buildCommand(String script, int start, int end){
         String content = script.substring(start, end);
-        System.out.println("[Parser]: Found command: "+content);
         return new ScriptElement(ScriptElement.Type.COMMAND, content);
     }
     
     private ScriptElement buildParameter(String script, int start, int end){
         String content = script.substring(start, end);
-        System.out.println("[Parser]: Found parameter: "+content);
         return new ScriptElement(ScriptElement.Type.PARAMETER, content);
     }
 }
