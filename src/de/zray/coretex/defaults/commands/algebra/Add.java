@@ -7,7 +7,6 @@ package de.zray.coretex.defaults.commands.algebra;
 
 import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.command.Parameter;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
