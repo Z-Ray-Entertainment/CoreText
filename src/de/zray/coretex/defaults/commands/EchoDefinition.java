@@ -22,6 +22,10 @@ public class EchoDefinition extends CommandDefinition{
         ParameterSetDefinition set = new ParameterSetDefinition();
         set.addParameterType(new ParameterType(ParameterType.Type.STRING));
         addParameterSetDefinition(set);
+        
+        ParameterSetDefinition set2 = new ParameterSetDefinition();
+        set2.addParameterType(new ParameterType(ParameterType.Type.INFINITE));
+        addParameterSetDefinition(set);
     }
     
 }
