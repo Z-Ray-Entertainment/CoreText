@@ -11,7 +11,7 @@ package de.zray.coretex.script;
  */
 public class ScriptElement {
     public static enum Type{OPEN_STATE, CLOSE_STATE, COMMAND, PARAMETER, CODE_START,
-        CODE_END, CLIP_OPEN, CLIP_CLOSE, COMMAD_END, STRING, UNDEFINED};
+        CODE_END, CLIP_OPEN, CLIP_CLOSE, COMMAD_END, STRING_CHARACTER, UNDEFINED};
     private String content;
     private Type type = Type.UNDEFINED;
     

@@ -6,8 +6,9 @@
 package de.zray.coretex.test;
 
 import de.zray.coretex.Console;
-import de.zray.coretex.commands.algebra.Add;
+import de.zray.coretex.exceptions.AliasException;
 import de.zray.coretex.exceptions.DublicateCommandException;
+import de.zray.coretex.exceptions.DublicateSyntaxRuleException;
 import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;
@@ -31,7 +32,7 @@ public class CoretexTestFrame extends javax.swing.JFrame{
         try {
             seConsole = new Console();
         }
-        catch (DublicateCommandException ex) {
+        catch (DublicateCommandException | DublicateSyntaxRuleException | AliasException ex) {
             jTA_Log.append("[ERROR]: "+ex.getMessage()+"\n");
         }
     }

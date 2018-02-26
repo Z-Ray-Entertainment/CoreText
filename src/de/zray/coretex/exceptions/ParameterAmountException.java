@@ -11,8 +11,8 @@ package de.zray.coretex.exceptions;
  */
 public class ParameterAmountException extends Exception{
 
-    public ParameterAmountException(int amountNeeded, int amountGiven, String parameters) {
-            super("Invalid amount of parameters, "+amountNeeded+" needed and "+amountGiven+" given. "+parameters);
+    public ParameterAmountException(int amountNeeded, int amountGiven) {
+            super("Invalid amount of parameters, "+amountNeeded+" needed and "+amountGiven+" given. ");
     }
     
 }
