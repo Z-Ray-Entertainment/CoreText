@@ -64,6 +64,10 @@ public abstract class AbstractCommand {
         return false;
     }
 
+    public List<String> getAliases(){
+        return aliases;
+    }
+    
     public String getHelp(){
         return definition.getHelp();
     }
