@@ -52,7 +52,7 @@ public class Executor {
                     if(tmpCMD != null){
                         if(!(cmd.size() <= 1)){
                             List<ScriptElement> parameters = cmd.subList(1, cmd.size());
-                            output.append(tmpCMD.execute(tmpCMD.buildParameters(parameters)));
+                                output.append(tmpCMD.execute(tmpCMD.buildParameters(parameters)));
                         }
                         else {
                             output.append(tmpCMD.execute(null));
