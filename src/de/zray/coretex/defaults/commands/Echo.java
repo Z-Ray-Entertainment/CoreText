@@ -20,7 +20,11 @@ public class Echo extends AbstractCommand{
 
     @Override
     public String action(List<Parameter> params) {
-        return "echo: "+params.get(0).getValue();
+        StringBuilder sb = new StringBuilder();
+        params.forEach((par) -> {
+            sb.append(par.getValue());
+        });
+        return "echo: "+sb.toString();
     }
     
 }
