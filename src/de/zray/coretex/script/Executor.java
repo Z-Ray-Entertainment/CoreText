@@ -49,14 +49,18 @@ public class Executor {
                     }
                     cmdName = cmd.get(0).getContent();
                     AbstractCommand tmpCMD = console.getCommandStorage().findCommand(cmdName);
-                    if(!(cmd.size() <= 1)){
-                        List<ScriptElement> parameters = cmd.subList(1, cmd.size()-1);
-                        tmpCMD.execute(tmpCMD.buildParameters(parameters));
+                    if(tmpCMD != null){
+                        if(!(cmd.size() <= 1)){
+                            List<ScriptElement> parameters = cmd.subList(1, cmd.size()-1);
+                            tmpCMD.execute(tmpCMD.buildParameters(parameters));
+                        }
+                        else {
+                            tmpCMD.execute(null);
+                        }
                     }
-                    else {
-                        tmpCMD.execute(null);
+                    else{
+                        return "Command "+cmdName+" not found";
                     }
-                    break;
             }
         }
         return "Not implemented yet.";
