@@ -21,6 +21,11 @@ public class AddDefinition extends CommandDefinition{
         set.addParameterType(new ParameterType(ParameterType.Type.DOUBLE));
         set.addParameterType(new ParameterType(ParameterType.Type.DOUBLE));
         addParameterSetDefinition(set);
+        
+        ParameterSetDefinition set2 = new ParameterSetDefinition();
+        set2.addParameterType(new ParameterType(ParameterType.Type.STRING));
+        set2.addParameterType(new ParameterType(ParameterType.Type.STRING));
+        addParameterSetDefinition(set2);
     }
     
 }
