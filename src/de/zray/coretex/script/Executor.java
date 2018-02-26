@@ -19,12 +19,14 @@ import java.util.List;
  */
 public class Executor {
     private Console console;
+    private StringBuilder output;
     
     public Executor(Console console){
         this.console = console;
     }
     
     public String execute(List<ScriptElement> elememts) throws InvalidTypeException, InvalidParameterValueException, ParameterAmountException{
+        output = new StringBuilder();
         List<ScriptElement> cmd = null;
         
         for(ScriptElement tmp : elememts){
@@ -51,18 +53,18 @@ public class Executor {
                     AbstractCommand tmpCMD = console.getCommandStorage().findCommand(cmdName);
                     if(tmpCMD != null){
                         if(!(cmd.size() <= 1)){
-                            List<ScriptElement> parameters = cmd.subList(1, cmd.size()-1);
-                            tmpCMD.execute(tmpCMD.buildParameters(parameters));
+                            List<ScriptElement> parameters = cmd.subList(1, cmd.size());
+                            output.append(tmpCMD.execute(tmpCMD.buildParameters(parameters)));
                         }
                         else {
-                            tmpCMD.execute(null);
+                            output.append(tmpCMD.execute(null));
                         }
                     }
                     else{
-                        return "Command "+cmdName+" not found";
+                        output.append("Command ").append(cmdName).append(" not found");
                     }
             }
         }
-        return "Not implemented yet.";
+        return output.toString();
     }
 }
