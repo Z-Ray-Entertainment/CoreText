@@ -83,7 +83,7 @@ public abstract class AbstractCommand {
         return null;
     }
     
-    public String execute(List<Parameter> params){
+    public String execute(List<Parameter> params) throws NullPointerException{
             return action(params);
     }
     
