@@ -35,11 +35,6 @@ public class Blacklist {
     }
     
     private boolean isAlreadyBlacklisted(String test){
-        for(String cur : blackList){
-            if(cur.equals(test)){
-                return true;
-            }
-        }
-        return false;
+        return blackList.stream().anyMatch((cur) -> (cur.equals(test)));
     }
 }
