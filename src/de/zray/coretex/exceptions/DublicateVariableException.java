@@ -5,16 +5,12 @@
  */
 package de.zray.coretex.exceptions;
 
-import de.zray.coretex.command.AbstractCommand;
-
 /**
  *
  * @author Vortex Acherontic
  */
-public class DublicateCommandException extends Exception{
-
-    public DublicateCommandException(AbstractCommand cmd) {
-        super(cmd.toString()+" already exist in command list.");
+public class DublicateVariableException extends Exception{
+    public DublicateVariableException(String variable){
+        super(variable+" already exist");
     }
-    
 }

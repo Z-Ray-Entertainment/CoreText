@@ -5,7 +5,8 @@
  */
 package de.zray.coretex.exceptions;
 
-import de.zray.coretex.Parameter;
+import de.zray.coretex.command.ParameterType.Type;
+
 
 /**
  *
@@ -13,7 +14,7 @@ import de.zray.coretex.Parameter;
  */
 public class InvalidParameterValueException extends Exception{
 
-    public InvalidParameterValueException(Parameter.Type inputType, Parameter.Type setType) {
+    public InvalidParameterValueException(Type inputType, Type setType) {
         super(inputType.toString()+" is invalid you must set a value as "+setType);
     }
     

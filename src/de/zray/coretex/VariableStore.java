@@ -5,6 +5,7 @@
  */
 package de.zray.coretex;
 
+import de.zray.coretex.exceptions.DublicateVariableException;
 import de.zray.coretex.exceptions.UnknownVariableException;
 import de.zray.coretex.exceptions.InvalidVarTypeException;
 import java.util.LinkedList;
@@ -31,6 +32,15 @@ public class VariableStore {
             if(tmp.compare(var.getName())){
                 tmp = var;
                 return;
+            }
+        }
+        vars.add(var);
+    }
+    
+    public void createVariable(Variable var) throws DublicateVariableException{
+        for(Variable tmp : vars){
+            if(tmp.getName().equals(var.getName())){
+                throw new DublicateVariableException(var.getName());
             }
         }
         vars.add(var);
