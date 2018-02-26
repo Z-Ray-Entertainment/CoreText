@@ -18,7 +18,6 @@ import java.util.List;
 public abstract class CommandDefinition {
     private String commandName, description;
     List<ParameterSetDefinition> sets;
-    private ParameterSetDefinition mayBeUsedSoon;
     
     public CommandDefinition(String commandName, String description){
         this.commandName = commandName;
@@ -30,6 +29,15 @@ public abstract class CommandDefinition {
             sets = new LinkedList<>();
         }
         this.sets.add(set);
+    }
+    
+    public final boolean matchParameters(List<ScriptElement> parameters){
+        for(ParameterSetDefinition set : sets){
+            if(set.match(parameters)){
+                return true;
+            }
+        }
+        return false;
     }
     
     public final boolean match(List<ScriptElement> elements){
@@ -84,7 +92,6 @@ public abstract class CommandDefinition {
     public final boolean hasAmount(int amount){
         for(ParameterSetDefinition set : sets){
             if(set.getAmount() == amount){
-                mayBeUsedSoon = set;
                 return true;
             }
         }
@@ -92,15 +99,10 @@ public abstract class CommandDefinition {
     }
     
     public final List<Parameter> buildParameters(List<ScriptElement> elements) throws ParameterAmountException, InvalidParameterValueException{
-        if(mayBeUsedSoon != null && mayBeUsedSoon.getAmount() == elements.size()){
-            System.out.println("Use prefound ParameterSetDefinition!");
-            return mayBeUsedSoon.buildParametes(elements);
-        }
-        else{
-            for(ParameterSetDefinition set : sets){
-                if(set.getAmount() == elements.size()){
-                    return set.buildParametes(elements);
-                }
+        for(ParameterSetDefinition set : sets){
+            if(set.getAmount() == elements.size() && set.match(elements)){
+                System.out.println("[CMDDef]: found matching set");
+                return set.buildParametes(elements);
             }
         }
         return null;

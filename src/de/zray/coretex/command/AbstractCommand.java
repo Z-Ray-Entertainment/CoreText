@@ -73,10 +73,11 @@ public abstract class AbstractCommand {
     }
     
     public List<Parameter> buildParameters(List<ScriptElement> elements) throws InvalidParameterValueException, ParameterAmountException{
-        if(definition.hasAmount(elements.size())){
-            throw new ParameterAmountException(definition.getLowesAmount(), elements.size());
+        if(definition.matchParameters(elements)){
+            System.out.println("[Abstr.CMD]: Found matching Definition");
+            return definition.buildParameters(elements);
         }
-        return definition.buildParameters(elements);
+        return null;
     }
     
     public String execute(List<Parameter> params){
