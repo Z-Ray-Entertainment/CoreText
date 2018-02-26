@@ -100,9 +100,9 @@ public abstract class CommandDefinition {
     
     public final List<Parameter> buildParameters(List<ScriptElement> elements) throws ParameterAmountException, InvalidParameterValueException{
         for(ParameterSetDefinition set : sets){
-            if(set.getAmount() == elements.size() && set.match(elements)){
-                System.out.println("[CMDDef]: found matching set");
-                return set.buildParametes(elements);
+            if(set.match(elements)){
+                System.out.println("[CMDDef]: found matching set has infinite: "+set.hasInfinite());
+                return set.buildParametes(elements, set.hasInfinite());
             }
         }
         return null;

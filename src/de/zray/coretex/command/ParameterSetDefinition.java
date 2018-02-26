@@ -32,12 +32,21 @@ public class ParameterSetDefinition {
                     return false;
                 }
             }
-            return true;
+            if(hasInfinite()){
+                return true;
+            } else if(elements.size() == validParameters.size()){
+                return true;
+            } else {
+                return false;
+            }
         }
         return false;
     }
     
     private boolean validateParameter(ParameterType type, ScriptElement element){
+        if(hasInfinite()){
+            return true;
+        }
         switch(type.getType()){
             case BOOLEAN :
                 try{
@@ -73,10 +82,10 @@ public class ParameterSetDefinition {
                 }
                 return true;
             case STRING :
-            case INFINITE :
             case UNDEFINED :
             case EMPTY :
             case CODEBLOCK :
+            case INFINITE :
                 return true;
         }
         return false;
@@ -106,8 +115,8 @@ public class ParameterSetDefinition {
         return validParameters.size();
     }
     
-    public List<Parameter> buildParametes(List<ScriptElement> elements) throws ParameterAmountException, InvalidParameterValueException{
-        if(getAmount() != elements.size()){
+    public List<Parameter> buildParametes(List<ScriptElement> elements, boolean infinite) throws ParameterAmountException, InvalidParameterValueException{
+        if(!infinite && getAmount() != elements.size()){
             throw new ParameterAmountException(getAmount(), elements.size());
         }
         List<Parameter> params = new LinkedList<>();
@@ -120,5 +129,9 @@ public class ParameterSetDefinition {
             System.out.println("[ParameterSetDef]: builded new parameter: "+param.getType()+" "+param.getValue());
         }
         return params;
+    }
+    
+    public boolean hasInfinite(){
+        return validParameters.stream().anyMatch((type) -> (type.getType() == ParameterType.Type.INFINITE));
     }
 }
