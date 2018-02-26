@@ -117,6 +117,7 @@ public class ParameterSetDefinition {
             Parameter param = new Parameter(paramType);
             param.setValue(content);
             params.add(param);
+            System.out.println("[ParameterSetDef]: builded new parameter: "+param.getType()+" "+param.getValue());
         }
         return params;
     }
