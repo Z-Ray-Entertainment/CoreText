@@ -15,7 +15,7 @@ import de.zray.coretex.command.ParameterType;
  */
 public class CoretexDefinition extends CommandDefinition{
     public CoretexDefinition() {
-        super("coretx", "This command is only fore coretex, and returns some values,\n"
+        super("coretx", "This command is only for coretex, and returns some values,\n"
                 + "such as Version, and can also be used to do some minor configurations.");
         ParameterSetDefinition set = new ParameterSetDefinition();
         set.addParameterType(new ParameterType(ParameterType.Type.STRING));
