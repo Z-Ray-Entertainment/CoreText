@@ -53,6 +53,7 @@ public class Parameter {
             case EMPTY :
                 throw new InvalidParameterValueException("Parameter of Type Empty can not have a value");
             case STRING :
+            case INFINITE :
                 //Do nothing
                 break;
             case UNDEFINED :

@@ -116,13 +116,23 @@ public class ParameterSetDefinition {
     }
     
     public List<Parameter> buildParametes(List<ScriptElement> elements, boolean infinite) throws ParameterAmountException, InvalidParameterValueException{
+        boolean lastWasInfinite = false;
         if(!infinite && getAmount() != elements.size()){
             throw new ParameterAmountException(getAmount(), elements.size());
         }
         List<Parameter> params = new LinkedList<>();
         for(int i = 0; i < elements.size(); i++){
             String content = elements.get(i).getContent();
-            ParameterType.Type paramType = validParameters.get(i).getType();
+            ParameterType.Type paramType;
+            if(!lastWasInfinite){
+                paramType = validParameters.get(i).getType();
+                if(paramType == ParameterType.Type.INFINITE){
+                    lastWasInfinite = true;
+                }
+            }
+            else {
+                paramType = ParameterType.Type.STRING;
+            }
             Parameter param = new Parameter(paramType);
             param.setValue(content);
             params.add(param);
