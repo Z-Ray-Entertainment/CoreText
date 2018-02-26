@@ -25,7 +25,7 @@ public class EchoDefinition extends CommandDefinition{
         
         ParameterSetDefinition set2 = new ParameterSetDefinition();
         set2.addParameterType(new ParameterType(ParameterType.Type.INFINITE));
-        addParameterSetDefinition(set);
+        addParameterSetDefinition(set2);
     }
     
 }
