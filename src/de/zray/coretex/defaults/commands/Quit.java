@@ -7,6 +7,7 @@ package de.zray.coretex.defaults.commands;
 
 import de.zray.coretex.command.AbstractCommand;
 import de.zray.coretex.command.Parameter;
+import de.zray.coretex.exceptions.AliasException;
 import java.util.List;
 
 /**
@@ -14,8 +15,9 @@ import java.util.List;
  * @author Vortex Acherontic
  */
 public class Quit extends AbstractCommand{
-    public Quit() {
+    public Quit() throws AliasException {
         super(new QuitDefinition());
+        addAlias("exit");
     }
 
     @Override
