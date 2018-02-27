@@ -16,7 +16,7 @@ public class Parser {
     public List<ScriptElement> parseScript(String script){
         List<ScriptElement> elements = new LinkedList<>();
         int start = 0;
-        boolean closeState = false, state = false, command = true;
+        boolean closeState = false, state = false, command = true, readString = false;
         
         for(int i = 0; i < script.length(); i++){
             String curChar = script.substring(i, i+1);
@@ -57,6 +57,10 @@ public class Parser {
                     start = i+1;
                     break;
                 case "\"" :
+                    readString = !readString;
+                    if(!readString){
+                        elements.add(buildParameter(script, start, i));
+                    }
                     elements.add(new ScriptElement(ScriptElement.Type.STRING_CHARACTER, curChar));
                     start = i+1;
                     break;
@@ -69,12 +73,14 @@ public class Parser {
                     start = i+1;
                     break;
                 case ";" :
-                    if(!command && !closeState && !state){
-                        elements.add(buildParameter(script, start, i));
-                    } else if(command && !closeState && !state){
-                        elements.add(buildCommand(script, start, i));
+                    if(!readString){
+                        if(!command && !closeState && !state){
+                            elements.add(buildParameter(script, start, i));
+                        } else if(command && !closeState && !state){
+                            elements.add(buildCommand(script, start, i));
+                        }
+                        elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
                     }
-                    elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
                     start = i+1;
                     break;
                 case " " :
