@@ -28,6 +28,8 @@ public class Executor {
     public String execute(List<ScriptElement> elememts) throws InvalidTypeException, InvalidParameterValueException, ParameterAmountException{
         output = new StringBuilder();
         List<ScriptElement> cmd = null;
+        boolean readingString = false;
+        String string = "";
         
         for(ScriptElement tmp : elememts){
             switch(tmp.getElementType()){
@@ -37,10 +39,25 @@ public class Executor {
                         cmd.add(tmp);
                     }
                     break;
-                case PARAMETER :
-                    if(cmd != null){
-                        cmd.add(tmp);
+                case STRING_CHARACTER :
+                    readingString = !readingString;
+                    if(readingString){
+                        string = "";
+                    } else{
+                        if(cmd != null){
+                            cmd.add(new ScriptElement(ScriptElement.Type.PARAMETER, string.substring(0, string.length()-1)));
+                        }
                     }
+                    break;
+                case PARAMETER :
+                    if(readingString){
+                        string += tmp.getContent()+" ";
+                    } else {
+                        if(cmd != null){
+                            cmd.add(tmp);
+                        }
+                    }
+                    
                     break;
                 case COMMAD_END :
                     String cmdName;
