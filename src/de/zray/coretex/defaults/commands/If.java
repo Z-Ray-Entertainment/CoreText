@@ -20,15 +20,7 @@ import java.util.List;
 public class If extends AbstractCommand{
 
     public If() {
-        super(null);
-        /*Parameter param1 = new Parameter(Parameter.Type.BOOLEAN);
-        Parameter param2 = new Parameter(Parameter.Type.CODEBLOCK);
-        Parameter param3 = new Parameter(Parameter.Type.CODEBLOCK);
-        List<Parameter> params = new LinkedList<>();
-        params.add(param1);
-        params.add(param2);
-        params.add(param3);
-        addParameters(params);*/
+        super(new IfDefinition());
     }
 
     @Override
