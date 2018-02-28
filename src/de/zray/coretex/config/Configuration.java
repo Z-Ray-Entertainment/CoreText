@@ -11,7 +11,7 @@ package de.zray.coretex.config;
  */
 public class Configuration {
     private static Configuration config;
-    Blacklist blackList;
+    private Blacklist blackList;
     
     public Configuration(){
         blackList = new Blacklist();
@@ -22,5 +22,9 @@ public class Configuration {
             config = new Configuration();
         }
         return config;
+    }
+    
+    public Blacklist getBlacklist(){
+        return blackList;
     }
 }
