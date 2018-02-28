@@ -25,22 +25,21 @@ public class If extends AbstractCommand{
 
     @Override
     public String action(List<Parameter> params) {
+        boolean condition = Boolean.parseBoolean(params.get(0).getValue());
         try {
-            String thenBlock = params.get(1).getValue().substring(1, params.get(1).getValue().length()-1);
+            String thenBlock = params.get(1).getValue();
             System.out.println("THEN: "+thenBlock);
-            String elseBlock = params.get(2).getValue().substring(1, params.get(2).getValue().length()-1);
+            String elseBlock = params.get(2).getValue();
             System.out.println("ELSE: "+elseBlock);
-            switch(params.get(0).getValue()){
-                case "true" :
-                    return getConsole().executeScript(thenBlock+";");
-                case "false" :
-                    return getConsole().executeScript(elseBlock+";");
+            if(condition){
+                return getConsole().executeScript(thenBlock+";");
+            } else {
+                return getConsole().executeScript(elseBlock+";");
             }
         }
         catch (SyntaxException | ParameterAmountException | InvalidTypeException | InvalidParameterValueException ex) {
             return ex.getMessage();
         }
-        return "";
     }
     
 }
