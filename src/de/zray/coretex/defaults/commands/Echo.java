@@ -22,9 +22,9 @@ public class Echo extends AbstractCommand{
     public String action(List<Parameter> params) {
         StringBuilder sb = new StringBuilder();
         params.forEach((par) -> {
-            sb.append(par.getValue());
+            sb.append(par.getValue()).append(" ");
         });
-        return "echo: "+sb.toString();
+        return "echo: "+sb.toString().substring(0, sb.length()-1);
     }
     
 }
