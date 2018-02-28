@@ -14,7 +14,7 @@ import java.util.Stack;
 public class StateStack {
     private Stack<InterfaceState> stack = new Stack<>();
     
-    public void addState(InterfaceState state){
+    public void pushState(InterfaceState state){
         stack.push(state);
     }
     
