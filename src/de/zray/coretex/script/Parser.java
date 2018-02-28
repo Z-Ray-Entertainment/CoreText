@@ -5,6 +5,7 @@
  */
 package de.zray.coretex.script;
 
+import de.zray.coretex.config.Indicators;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Parser {
         for(int i = 0; i < script.length(); i++){
             String curChar = script.substring(i, i+1);
             switch(curChar){
-                case "<" :
+                case Indicators.STATE_OPEN :
                     switch(state){
                         case DEFAULT :
                             state = ParseState.READ_STATE;
@@ -31,7 +32,7 @@ public class Parser {
                             break;
                     }
                     break;
-                case ">" :
+                case Indicators.STATE_CLOSE :
                     switch(state){
                         case READ_STATE :
                             String openStateName = script.substring(start, i);
@@ -47,14 +48,14 @@ public class Parser {
                             break;
                     }
                     break;
-                case "/" :
+                case Indicators.CLOSING_STATE :
                     switch(state){
                         case READ_STATE :
                             state = ParseState.CLOSE_STATE;
                             break;
                     }
                     break;
-                case "(" :
+                case Indicators.NESTED_COMMAND_START :
                     switch(state){
                         case DEFAULT :
                             elements.add(new ScriptElement(ScriptElement.Type.CLIP_OPEN, curChar));
@@ -62,7 +63,7 @@ public class Parser {
                             break;
                     }
                     break;
-                case ")" :
+                case Indicators.NESTED_COMMAND_END :
                     switch(state){
                         case DEFAULT :
                             elements.add(new ScriptElement(ScriptElement.Type.CLIP_CLOSE, curChar));
@@ -70,7 +71,7 @@ public class Parser {
                             break;
                     }
                     break;
-                case "\"" :
+                case Indicators.STRING :
                     switch(state){
                         case STRING :
                             state = ParseState.DEFAULT;
@@ -84,7 +85,7 @@ public class Parser {
                             break;
                     }
                     break;
-                case "[" :
+                case Indicators.CODE_START :
                     switch(state){
                         case DEFAULT :
                         case CODE :
@@ -94,7 +95,7 @@ public class Parser {
                             break;
                     }
                     break;
-                case "]" :
+                case Indicators.CODE_END :
                     switch(state){
                         case CODE :
                             elements.add(new ScriptElement(ScriptElement.Type.CODE_END, curChar));
@@ -103,7 +104,7 @@ public class Parser {
                             break;
                     }
                     break;
-                case ";" :
+                case Indicators.COMMAND_END :
                     switch(state){
                         case DEFAULT :
                             elements.add(buildCommand(script, start, i));
@@ -118,7 +119,7 @@ public class Parser {
                             break;
                     }
                     break;
-                case " " :
+                case Indicators.SEPERATOR :
                     switch(state){
                         case DEFAULT :
                             elements.add(buildCommand(script, start, i));
