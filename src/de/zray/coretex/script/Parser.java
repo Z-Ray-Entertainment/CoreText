@@ -13,85 +13,123 @@ import java.util.List;
  * @author Vortex Acherontic
  */
 public class Parser {
+    private enum ParseState{READ_STATE, CLOSE_STATE, STRING, DEFAULT, CODE, PARAMETER}
+    private ParseState state = ParseState.DEFAULT;
+    
     public List<ScriptElement> parseScript(String script){
         List<ScriptElement> elements = new LinkedList<>();
         int start = 0;
-        boolean closeState = false, state = false, command = true, readString = false;
         
         for(int i = 0; i < script.length(); i++){
             String curChar = script.substring(i, i+1);
             switch(curChar){
                 case "<" :
-                    if(start == -1){
-                        state = true;
-                        command = false;
-                        start = i;
+                    switch(state){
+                        case DEFAULT :
+                            state = ParseState.READ_STATE;
+                            start = i+1;
+                            break;
                     }
                     break;
                 case ">" :
-                    if(start != -1){
-                        String content = script.substring(start, i+1);
-                        if(!closeState){
-                            elements.add(new ScriptElement(ScriptElement.Type.OPEN_STATE, content));
-                            command = true;
-                        }
-                        else{
-                            elements.add(new ScriptElement(ScriptElement.Type.CLOSE_STATE, content));
-                            closeState = false;
-                            command = true;
-                        }
-                        start = -1;
+                    switch(state){
+                        case READ_STATE :
+                            String openStateName = script.substring(start, i);
+                            elements.add(new ScriptElement(ScriptElement.Type.OPEN_STATE, openStateName));
+                            state = ParseState.DEFAULT;
+                            start = i+1;
+                            break;
+                        case CLOSE_STATE :
+                            String closeStateName = script.substring(start, i);
+                            elements.add(new ScriptElement(ScriptElement.Type.CLOSE_STATE, closeStateName));
+                            state = ParseState.DEFAULT;
+                            start = i+1;
+                            break;
                     }
                     break;
                 case "/" :
-                    if(state){
-                        closeState = true;
+                    switch(state){
+                        case READ_STATE :
+                            state = ParseState.CLOSE_STATE;
+                            break;
                     }
                     break;
                 case "(" :
-                    elements.add(new ScriptElement(ScriptElement.Type.CLIP_OPEN, curChar));
-                    start = i+1;
+                    switch(state){
+                        case DEFAULT :
+                            elements.add(new ScriptElement(ScriptElement.Type.CLIP_OPEN, curChar));
+                            start = i+1;
+                            break;
+                    }
                     break;
                 case ")" :
-                    elements.add(new ScriptElement(ScriptElement.Type.CLIP_CLOSE, curChar));
-                    start = i+1;
+                    switch(state){
+                        case DEFAULT :
+                            elements.add(new ScriptElement(ScriptElement.Type.CLIP_CLOSE, curChar));
+                            start = i+1;
+                            break;
+                    }
                     break;
                 case "\"" :
-                    readString = !readString;
-                    if(!readString){
-                        elements.add(buildParameter(script, start, i));
+                    switch(state){
+                        case STRING :
+                            state = ParseState.DEFAULT;
+                            String string = script.substring(start, i);
+                            elements.add(new ScriptElement(ScriptElement.Type.PARAMETER, string));
+                            break;
+                        case DEFAULT :
+                        case PARAMETER :
+                            state = ParseState.STRING;
+                            start = i+1;
+                            break;
                     }
-                    elements.add(new ScriptElement(ScriptElement.Type.STRING_CHARACTER, curChar));
-                    start = i+1;
                     break;
                 case "[" :
-                    elements.add(new ScriptElement(ScriptElement.Type.CODE_START, curChar));
-                    start = i+1;
+                    switch(state){
+                        case DEFAULT :
+                        case CODE :
+                            state = ParseState.CODE;
+                            elements.add(new ScriptElement(ScriptElement.Type.CODE_START, curChar));
+                            start = i+1;
+                            break;
+                    }
                     break;
                 case "]" :
-                    elements.add(new ScriptElement(ScriptElement.Type.CODE_END, curChar));
-                    start = i+1;
+                    switch(state){
+                        case CODE :
+                            elements.add(new ScriptElement(ScriptElement.Type.CODE_END, curChar));
+                            start = i+1;
+                            state = ParseState.DEFAULT;
+                            break;
+                    }
                     break;
                 case ";" :
-                    if(!readString){
-                        if(!command && !closeState && !state){
-                            elements.add(buildParameter(script, start, i));
-                        } else if(command && !closeState && !state){
+                    switch(state){
+                        case DEFAULT :
                             elements.add(buildCommand(script, start, i));
-                        }
-                        elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
+                            elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
+                            start = i+1;
+                            break;
+                        case PARAMETER :
+                            state = ParseState.DEFAULT;
+                            elements.add(buildParameter(script, start, i));
+                            elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
+                            start = i+1;
+                            break;
                     }
-                    start = i+1;
                     break;
                 case " " :
-                    if(command){
-                        elements.add(buildCommand(script, start, i));
-                        command = false;
-                        start = i+1;
-                    }
-                    else{
-                        elements.add(buildParameter(script, start, i));
-                        start = i+1;
+                    switch(state){
+                        case DEFAULT :
+                            elements.add(buildCommand(script, start, i));
+                            state = ParseState.PARAMETER;
+                            start = i+1;
+                            break;
+                        case PARAMETER :
+                            elements.add(buildParameter(script, start, i));
+                            state = ParseState.PARAMETER;
+                            start = i+1;
+                            break;
                     }
                     break;
             }
