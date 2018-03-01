@@ -16,13 +16,13 @@ import java.util.List;
 public class Parser {
     private enum ParseState{
         READ_STATE, CLOSE_STATE, STRING, DEFAULT, CODE, PARAMETER, AFTER_CODE,
+        AFTER_NESTED
     }
     private ParseState state = ParseState.DEFAULT;
 
     public List<ScriptElement> parseScript(String script){
         List<ScriptElement> elements = new LinkedList<>();
         int start = 0, openCodes = 0;
-        boolean lastWasSeperator = false;
         
         for(int i = 0; i < script.length(); i++){
             String curChar = script.substring(i, i+1);
@@ -62,6 +62,7 @@ public class Parser {
                 case Indicators.NESTED_COMMAND_START :
                     switch(state){
                         case DEFAULT :
+                        case PARAMETER :
                             elements.add(new ScriptElement(ScriptElement.Type.CLIP_OPEN, curChar));
                             start = i+1;
                             break;
@@ -70,8 +71,10 @@ public class Parser {
                 case Indicators.NESTED_COMMAND_END :
                     switch(state){
                         case DEFAULT :
+                        case PARAMETER :
                             elements.add(new ScriptElement(ScriptElement.Type.CLIP_CLOSE, curChar));
                             start = i+1;
+                            state = ParseState.AFTER_NESTED;
                             break;
                     }
                     break;
@@ -129,6 +132,7 @@ public class Parser {
                             start = i+1;
                             break;
                         case AFTER_CODE :
+                        case AFTER_NESTED :
                             elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
                             state = ParseState.DEFAULT;
                             start = i+1;
@@ -155,24 +159,25 @@ public class Parser {
                     break;
             }
         }
+        System.out.println("[Parser]: Commands build: ");
+        for(ScriptElement el : elements){
+            System.out.println("-> "+el.getElementType()+" "+el.getContent());
+        }
         return elements;
     }
     
     private ScriptElement buildCommand(String script, int start, int end){
         String content = script.substring(start, end);
-        System.out.println("[Parser]: Builded command: "+content);
         return new ScriptElement(ScriptElement.Type.COMMAND, content);
     }
     
     private ScriptElement buildParameter(String script, int start, int end){
         String content = script.substring(start, end);
-        System.out.println("[Parser]: Builded parameter: "+content);
         return new ScriptElement(ScriptElement.Type.PARAMETER, content);
     }
     
     private ScriptElement buildCodeBlock(String script, int start, int end){
         String content = script.substring(start, end);
-        System.out.println("[Parser]: Builded codeblock: "+content);
         return new ScriptElement(ScriptElement.Type.CODEBLOCK, content);
     }
 }

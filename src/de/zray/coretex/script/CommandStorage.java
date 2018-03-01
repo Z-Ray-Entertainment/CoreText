@@ -11,7 +11,7 @@ import de.zray.coretex.defaults.commands.Alias;
 import de.zray.coretex.defaults.commands.Coretex;
 import de.zray.coretex.defaults.commands.Echo;
 import de.zray.coretex.defaults.commands.Help;
-import de.zray.coretex.defaults.commands.If;
+import de.zray.coretex.defaults.commands.bool.If;
 import de.zray.coretex.defaults.commands.Quit;
 import de.zray.coretex.defaults.commands.algebra.Add;
 import de.zray.coretex.defaults.commands.algebra.Divide;
