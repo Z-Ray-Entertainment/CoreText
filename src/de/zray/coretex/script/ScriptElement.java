@@ -10,8 +10,10 @@ package de.zray.coretex.script;
  * @author vortex
  */
 public class ScriptElement {
-    public static enum Type{OPEN_STATE, CLOSE_STATE, COMMAND, PARAMETER, CODE_START,
-        CODE_END, CLIP_OPEN, CLIP_CLOSE, COMMAD_END, UNDEFINED};
+    public static enum Type{
+            OPEN_STATE, CLOSE_STATE, COMMAND, PARAMETER, CODEBLOCK, CLIP_OPEN, 
+            CLIP_CLOSE, COMMAD_END, UNDEFINED
+    };
     private String content;
     private Type type = Type.UNDEFINED;
     

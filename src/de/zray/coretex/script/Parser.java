@@ -14,15 +14,19 @@ import java.util.List;
  * @author Vortex Acherontic
  */
 public class Parser {
-    private enum ParseState{READ_STATE, CLOSE_STATE, STRING, DEFAULT, CODE, PARAMETER}
+    private enum ParseState{
+        READ_STATE, CLOSE_STATE, STRING, DEFAULT, CODE, PARAMETER, AFTER_CODE,
+    }
     private ParseState state = ParseState.DEFAULT;
-    
+
     public List<ScriptElement> parseScript(String script){
         List<ScriptElement> elements = new LinkedList<>();
-        int start = 0;
+        int start = 0, openCodes = 0;
+        boolean lastWasSeperator = false;
         
         for(int i = 0; i < script.length(); i++){
             String curChar = script.substring(i, i+1);
+            System.out.println("[Parser]: char: "+curChar+" STATE: "+state.toString());
             switch(curChar){
                 case Indicators.STATE_OPEN :
                     switch(state){
@@ -88,19 +92,26 @@ public class Parser {
                 case Indicators.CODE_START :
                     switch(state){
                         case DEFAULT :
+                        case PARAMETER :
                         case CODE :
-                            state = ParseState.CODE;
-                            elements.add(new ScriptElement(ScriptElement.Type.CODE_START, curChar));
-                            start = i+1;
+                        case AFTER_CODE :
+                            if(openCodes == 0){
+                                start = i+1;
+                                state = ParseState.CODE;
+                            }
+                            openCodes++;
                             break;
                     }
                     break;
                 case Indicators.CODE_END :
                     switch(state){
                         case CODE :
-                            elements.add(new ScriptElement(ScriptElement.Type.CODE_END, curChar));
-                            start = i+1;
-                            state = ParseState.DEFAULT;
+                            openCodes--;
+                            if(openCodes == 0){
+                                elements.add(buildCodeBlock(script, start, i));
+                                start = i+1;
+                                state = ParseState.AFTER_CODE;
+                            }                            
                             break;
                     }
                     break;
@@ -117,6 +128,11 @@ public class Parser {
                             elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
                             start = i+1;
                             break;
+                        case AFTER_CODE :
+                            elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
+                            state = ParseState.DEFAULT;
+                            start = i+1;
+                            break;
                     }
                     break;
                 case Indicators.SEPERATOR :
@@ -131,6 +147,10 @@ public class Parser {
                             state = ParseState.PARAMETER;
                             start = i+1;
                             break;
+                        case AFTER_CODE :
+                            state = ParseState.PARAMETER;
+                            start = i+1;
+                            break;
                     }
                     break;
             }
@@ -140,11 +160,19 @@ public class Parser {
     
     private ScriptElement buildCommand(String script, int start, int end){
         String content = script.substring(start, end);
+        System.out.println("[Parser]: Builded command: "+content);
         return new ScriptElement(ScriptElement.Type.COMMAND, content);
     }
     
     private ScriptElement buildParameter(String script, int start, int end){
         String content = script.substring(start, end);
+        System.out.println("[Parser]: Builded parameter: "+content);
         return new ScriptElement(ScriptElement.Type.PARAMETER, content);
+    }
+    
+    private ScriptElement buildCodeBlock(String script, int start, int end){
+        String content = script.substring(start, end);
+        System.out.println("[Parser]: Builded codeblock: "+content);
+        return new ScriptElement(ScriptElement.Type.CODEBLOCK, content);
     }
 }

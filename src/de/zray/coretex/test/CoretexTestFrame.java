@@ -165,9 +165,7 @@ public class CoretexTestFrame extends javax.swing.JFrame{
     private String issueCommand(String input){
         try {
             return seConsole.executeScript(input);
-        } catch (SyntaxException | ParameterAmountException | InvalidTypeException | InvalidParameterValueException | NullPointerException ex) {
-            jTA_Log.append("[ERROR]: "+ex.getMessage()+"\n");
-        } catch (Exception ex) {
+        } catch (SyntaxException | ParameterAmountException | InvalidTypeException | InvalidParameterValueException ex) {
             jTA_Log.append("[ERROR]: "+ex.getMessage()+"\n");
         }
         return "[ERROR]: while exectuing: "+input;

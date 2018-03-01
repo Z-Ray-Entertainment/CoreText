@@ -38,6 +38,7 @@ public class Executor {
                     }
                     break;
                 case PARAMETER :
+                case CODEBLOCK :
                     cmd.add(tmp);
                     break;
                 case COMMAD_END :
