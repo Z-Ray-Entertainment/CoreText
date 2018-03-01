@@ -146,13 +146,17 @@ public class Parser {
                 case Indicators.SEPERATOR :
                     switch(state){
                         case DEFAULT :
-                            elements.add(buildCommand(script, start, i));
-                            state = ParseState.PARAMETER;
+                            if(start != i){
+                                elements.add(buildCommand(script, start, i));
+                                state = ParseState.PARAMETER;
+                            }
                             start = i+1;
                             break;
                         case PARAMETER :
-                            elements.add(buildParameter(script, start, i));
-                            state = ParseState.PARAMETER;
+                            if(start != i){
+                                elements.add(buildParameter(script, start, i));
+                                state = ParseState.PARAMETER;
+                            }
                             start = i+1;
                             break;
                         case AFTER_CODE :
