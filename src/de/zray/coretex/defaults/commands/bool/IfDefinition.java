@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.zray.coretex.defaults.commands;
+package de.zray.coretex.defaults.commands.bool;
 
 import de.zray.coretex.command.CommandDefinition;
 import de.zray.coretex.command.ParameterSetDefinition;
