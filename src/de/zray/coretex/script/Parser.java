@@ -121,14 +121,18 @@ public class Parser {
                 case Indicators.COMMAND_END :
                     switch(state){
                         case DEFAULT :
-                            elements.add(buildCommand(script, start, i));
-                            elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
+                            if(start != i){
+                                elements.add(buildCommand(script, start, i));
+                                elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
+                            }
                             start = i+1;
                             break;
                         case PARAMETER :
                             state = ParseState.DEFAULT;
-                            elements.add(buildParameter(script, start, i));
-                            elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
+                            if(start != i){
+                                elements.add(buildParameter(script, start, i));
+                                elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
+                            }
                             start = i+1;
                             break;
                         case AFTER_CODE :
