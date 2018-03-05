@@ -12,6 +12,7 @@ package de.zray.coretex.config;
 public class Configuration {
     private static Configuration config;
     private Blacklist blackList;
+    private int historySize = 10;
     
     public Configuration(){
         blackList = new Blacklist();
@@ -26,5 +27,13 @@ public class Configuration {
     
     public Blacklist getBlacklist(){
         return blackList;
+    }
+    
+    public int getHistorySize(){
+        return historySize;
+    }
+    
+    public void setHistorySize(int size){
+        historySize = size;
     }
 }
