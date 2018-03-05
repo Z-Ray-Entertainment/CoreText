@@ -18,8 +18,9 @@ public class VarDefinition extends CommandDefinition{
     public VarDefinition() {
         super("var", "Creates a new variable with the given type(1) and name(2)");
         ParameterSetDefinition set = new ParameterSetDefinition();
-        set.addParameterType(new ParameterType(ParameterType.Type.STRING));
-        set.addParameterType(new ParameterType(ParameterType.Type.STRING));
+        set.addParameterType(new ParameterType(ParameterType.Type.STRING));//type
+        set.addParameterType(new ParameterType(ParameterType.Type.STRING));//name
+        set.addParameterType(new ParameterType(ParameterType.Type.STRING));//value
         addParameterSetDefinition(set);
     }
     

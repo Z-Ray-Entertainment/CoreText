@@ -36,13 +36,13 @@ public class Console {
     
     public Console() throws DublicateCommandException, DublicateSyntaxRuleException, AliasException{
         varStore = new VariableStore();
-        parser = new Parser();
+        parser = new Parser(this);
         validator = new Validator(true);
         executor = new Executor(this);
         cmdSotrage = new CommandStorage(this, true);
     }
         
-    public String executeScript(String input) throws SyntaxException, ParameterAmountException, InvalidTypeException, InvalidParameterValueException{
+    public String executeScript(String input) throws SyntaxException, ParameterAmountException, InvalidTypeException, InvalidParameterValueException, UnknownVariableException{
         validator.checkSyntax(input);
         history.add(input);
         return executor.execute(parser.parseScript(input));

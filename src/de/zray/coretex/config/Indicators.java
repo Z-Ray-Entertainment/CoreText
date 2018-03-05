@@ -12,5 +12,5 @@ package de.zray.coretex.config;
 public class Indicators {
     public static final String STRING = "\"", NESTED_COMMAND_START = "(", NESTED_COMMAND_END = ")",
             CODE_START = "[", CODE_END = "]", COMMAND_END = ";", SEPERATOR = " ",
-            STATE_OPEN = "<", STATE_CLOSE = ">", CLOSING_STATE = "/";
+            STATE_OPEN = "<", STATE_CLOSE = ">", CLOSING_STATE = "/", VARIABLE = "$";
 }

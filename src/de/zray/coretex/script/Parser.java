@@ -5,7 +5,9 @@
  */
 package de.zray.coretex.script;
 
+import de.zray.coretex.Console;
 import de.zray.coretex.config.Indicators;
+import de.zray.coretex.exceptions.UnknownVariableException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,19 +16,36 @@ import java.util.List;
  * @author Vortex Acherontic
  */
 public class Parser {
+    private Console console;
+    
+    public Parser(Console console){
+        this.console = console;
+    }
+    
     private enum ParseState{
         READ_STATE, CLOSE_STATE, STRING, DEFAULT, CODE, PARAMETER, AFTER_CODE,
-        AFTER_NESTED
+        AFTER_NESTED, PARSE_VAR
     }
     private ParseState state = ParseState.DEFAULT;
 
-    public List<ScriptElement> parseScript(String script){
+    public List<ScriptElement> parseScript(String script) throws UnknownVariableException{
         List<ScriptElement> elements = new LinkedList<>();
         int start = 0, openCodes = 0;
         
         for(int i = 0; i < script.length(); i++){
             String curChar = script.substring(i, i+1);
             switch(curChar){
+                case Indicators.VARIABLE :
+                    switch(state){
+                        case CODE :
+                            //Do nothing
+                            break;
+                        default:
+                            start = i+1;
+                            state = ParseState.PARSE_VAR;
+                            break;
+                    }
+                    break;
                 case Indicators.STATE_OPEN :
                     switch(state){
                         case DEFAULT :
@@ -166,6 +185,12 @@ public class Parser {
                             start = i+1;
                             state = ParseState.PARAMETER;
                             break;
+                        case PARSE_VAR :
+                            String var = script.substring(start, i);
+                            String varValue = console.getVariable(var).getValue();
+                            elements.add(new ScriptElement(ScriptElement.Type.PARAMETER, varValue));
+                            state = ParseState.DEFAULT;
+                            break;
                     }
                     break;
             }
@@ -174,6 +199,7 @@ public class Parser {
         for(ScriptElement el : elements){
             System.out.println("-> "+el.getElementType()+" "+el.getContent());
         }
+        state = ParseState.DEFAULT;
         return elements;
     }
     

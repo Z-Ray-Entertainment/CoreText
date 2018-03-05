@@ -11,6 +11,7 @@ import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.exceptions.SyntaxException;
+import de.zray.coretex.exceptions.UnknownVariableException;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class If extends AbstractCommand{
                 return getConsole().executeScript(elseBlock+";");
             }
         }
-        catch (SyntaxException | ParameterAmountException | InvalidTypeException | InvalidParameterValueException ex) {
+        catch (SyntaxException | ParameterAmountException | InvalidTypeException | InvalidParameterValueException | UnknownVariableException ex) {
             return ex.getMessage();
         }
     }

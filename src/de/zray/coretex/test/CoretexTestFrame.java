@@ -13,6 +13,7 @@ import de.zray.coretex.exceptions.InvalidParameterValueException;
 import de.zray.coretex.exceptions.InvalidTypeException;
 import de.zray.coretex.exceptions.ParameterAmountException;
 import de.zray.coretex.exceptions.SyntaxException;
+import de.zray.coretex.exceptions.UnknownVariableException;
 import java.awt.event.KeyEvent;
 
 /**
@@ -165,7 +166,7 @@ public class CoretexTestFrame extends javax.swing.JFrame{
     private String issueCommand(String input){
         try {
             return seConsole.executeScript(input);
-        } catch (SyntaxException | ParameterAmountException | InvalidTypeException | InvalidParameterValueException ex) {
+        } catch (SyntaxException | ParameterAmountException | InvalidTypeException | InvalidParameterValueException | UnknownVariableException ex) {
             jTA_Log.append("[ERROR]: "+ex.getMessage()+"\n");
         }
         return "[ERROR]: while exectuing: "+input;
