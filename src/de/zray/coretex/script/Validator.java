@@ -42,7 +42,6 @@ public class Validator {
         
         for(int i = 0; i < input.length(); i++){
             String curChar = input.substring(i, i+1);
-            System.out.println("Char: "+curChar);
             for(SyntaxRule tmp : rules){
                 tmp.check(curChar);
             }
