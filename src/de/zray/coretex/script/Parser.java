@@ -26,7 +26,6 @@ public class Parser {
         
         for(int i = 0; i < script.length(); i++){
             String curChar = script.substring(i, i+1);
-            System.out.println("[Parser]: char: "+curChar+" STATE: "+state.toString());
             switch(curChar){
                 case Indicators.STATE_OPEN :
                     switch(state){
@@ -162,6 +161,10 @@ public class Parser {
                         case AFTER_CODE :
                             state = ParseState.PARAMETER;
                             start = i+1;
+                            break;
+                        case AFTER_NESTED :
+                            start = i+1;
+                            state = ParseState.PARAMETER;
                             break;
                     }
                     break;
