@@ -18,6 +18,8 @@ import de.zray.coretex.script.CommandStorage;
 import de.zray.coretex.script.Executor;
 import de.zray.coretex.script.Parser;
 import de.zray.coretex.script.Validator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Copyright by Imo "Vortex Acherontic" Hester and/or Z-Ray Entertainment
@@ -30,6 +32,7 @@ public class Console {
     private final Validator validator;
     private final Executor executor;
     private final CommandStorage cmdSotrage;
+    private List<String> history = new LinkedList<>();
     
     public Console() throws DublicateCommandException, DublicateSyntaxRuleException, AliasException{
         varStore = new VariableStore();
@@ -41,6 +44,7 @@ public class Console {
         
     public String executeScript(String input) throws SyntaxException, ParameterAmountException, InvalidTypeException, InvalidParameterValueException{
         validator.checkSyntax(input);
+        history.add(input);
         return executor.execute(parser.parseScript(input));
     }
     
