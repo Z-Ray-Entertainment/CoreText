@@ -153,6 +153,12 @@ public class Parser {
                             }
                             start = i+1;
                             break;
+                        case PARSE_VAR :
+                            elements.add(parseVariable(script, start, i));
+                            elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
+                            start = i +1;
+                            state = ParseState.DEFAULT;
+                            break;
                         case AFTER_CODE :
                         case AFTER_NESTED :
                             elements.add(new ScriptElement(ScriptElement.Type.COMMAD_END, curChar));
@@ -186,9 +192,7 @@ public class Parser {
                             state = ParseState.PARAMETER;
                             break;
                         case PARSE_VAR :
-                            String var = script.substring(start, i);
-                            String varValue = console.getVariable(var).getValue();
-                            elements.add(new ScriptElement(ScriptElement.Type.PARAMETER, varValue));
+                            elements.add(parseVariable(script, start, i));
                             state = ParseState.DEFAULT;
                             break;
                     }
@@ -206,6 +210,13 @@ public class Parser {
     private ScriptElement buildCommand(String script, int start, int end){
         String content = script.substring(start, end);
         return new ScriptElement(ScriptElement.Type.COMMAND, content);
+    }
+    
+    private ScriptElement parseVariable(String script, int start, int end) throws UnknownVariableException{
+        String var = script.substring(start, end);
+        String varValue = console.getVariable(var).getValue();
+        System.out.println("[Parser]: Parsed var: "+var+" value: "+varValue);
+        return new ScriptElement(ScriptElement.Type.PARAMETER, varValue);
     }
     
     private ScriptElement buildParameter(String script, int start, int end){

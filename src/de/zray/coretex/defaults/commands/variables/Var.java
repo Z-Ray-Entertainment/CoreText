@@ -55,8 +55,11 @@ public class Var extends AbstractCommand{
                     return "Unknown type "+params.get(0).getValue();
             }
         }
-        catch(InvalidVarTypeException | DublicateVariableException e){
-            return value+" dose not matches type "+type+" for "+name;
+        catch(InvalidVarTypeException e){
+            return "[ERROR]: "+value+" dose not matches type "+type+" for "+name;
+        }
+        catch(DublicateVariableException e){
+            return "[ERROR]: "+name+" already exist";
         }
         return value;
     }
