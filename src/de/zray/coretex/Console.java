@@ -59,4 +59,8 @@ public class Console {
     public void createVar(Variable var) throws DublicateVariableException {
         varStore.createVariable(var);
     }
+    
+    public void deleteVariable(String name){
+        varStore.deleteVariable(name);
+    }
 }

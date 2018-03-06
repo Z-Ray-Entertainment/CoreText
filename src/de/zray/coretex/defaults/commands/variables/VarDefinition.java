@@ -22,6 +22,11 @@ public class VarDefinition extends CommandDefinition{
         set.addParameterType(new ParameterType(ParameterType.Type.STRING));//name
         set.addParameterType(new ParameterType(ParameterType.Type.STRING));//value
         addParameterSetDefinition(set);
+        
+        ParameterSetDefinition set2 = new ParameterSetDefinition();
+        set2.addParameterType(new ParameterType(ParameterType.Type.STRING));//subcomand
+        set2.addParameterType(new ParameterType(ParameterType.Type.STRING));//variable
+        addParameterSetDefinition(set2);
     }
     
 }

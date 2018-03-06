@@ -27,6 +27,16 @@ public class VariableStore {
         }
     }
     
+    public void deleteVariable(String name){
+        for(Variable tmp : vars){
+            if(tmp.compare(name)){
+                vars.remove(tmp);
+                System.out.println("[Var.Store.]: Deleted "+name);
+                return;
+            }
+        }
+    }
+    
     public void addVariable(Variable var){
         for(Variable tmp : vars){
             if(tmp.compare(var.getName())){
